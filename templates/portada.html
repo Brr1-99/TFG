@@ -1,0 +1,30 @@
+{%extends 'layout.html'%}
+
+{% block body%}
+    <div class="container" style="height: 600px">
+       <div id="C1" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false" style="height: inherit">
+          <div class="carousel-inner" style="height: inherit">
+                <div class="carousel-item active" style="height: inherit">
+                   <div class="d-flex justify-content-center align-items-center h-100" >
+                       <p style="color:white">Bienvenidos a la página principal de mi TFG </p>
+                   </div>
+                </div>
+                <div class="carousel-item" style="height: inherit">
+                  <div class="d-flex justify-content-center align-items-center h-100" >
+                       <p style="color:white"> Para empezar , haz click en registrarse o en el icono de la universidad <br>
+                           <a href="/registrar"> Registro </a>
+                       </p>
+                   </div>
+                </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#C1" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#C1" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Siguiente</span>
+          </button>
+        </div>
+    </div>
+{% endblock %}

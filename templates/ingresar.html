@@ -1,0 +1,61 @@
+{%extends 'layout.html'%}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="../static/style.css">
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+        }
+        login-wrapper{
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: black;
+        }
+
+    </style>
+{% endblock %}
+
+
+{% block body%}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+     <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <p> {{message}}</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor%}
+{% endif %}
+{% endwith %}
+
+    <div class="login-wrapper" style="padding: 20px">
+        <div class="p-relative mx-auto overflow-hidden bg-white" style="width: 350px; height: 500px; ">
+            <div class="login">
+                <form class="formulario" action="/ingresar" method="POST">
+                    <div class="input-group">
+                            <span>Dirección de correo</span>
+                            <input type="email" name="Correo login" required placeholder="correo" class="inp"/>
+                        </div>
+                        <div class="input-group">
+                            <span>Contraseña</span>
+                            <input type="password" name="Password login" required placeholder="password" class="inp"/>
+                        </div>
+                    <div class="input-group">
+                            <button type="submit" class="inp submit-inp">
+                                Iniciar sesión
+                            </button>
+                        </div>
+                    <p style="color: black;text-align: center;margin-top: 30px">No tiene cuenta?
+                        <a class="nav-link" style="color: green;text-align: center" href="/registrar">Regístrese.</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

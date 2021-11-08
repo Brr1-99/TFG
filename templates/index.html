@@ -1,0 +1,97 @@
+{% extends 'layout.html' %}
+
+{% block body%}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <p> {{message}}</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor%}
+{% endif %}
+{% endwith %}
+<div class="container" style="padding : 20px">
+<form action="/search" method="POST">
+    <div class="row">
+        <div class="col-md-3 col-lg-2 ">
+            <div class="form-group">
+                <select class="form-select" name="opciones">
+                  <option selected value="Nombre producto">Nombre </option>
+                  <option value="Fecha registro">Fecha </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <input type="text" class="form-control" name="input2" required>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <button type="submit" class="btn btn-primary">
+            Buscar
+            </button>
+        </div>
+    </div>
+</form>
+</div>
+{% if mensaje %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p> No hay coincidencias. Pruebe con otro criterio de búsqueda</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+
+<div class="container" style="padding : 20px">
+<form action="/add_contact" method="POST">
+    <div class="row">
+        <div class="col-md-6 col-lg-3">
+            <input type="text" class="form-control" name="pieza" placeholder="nombre de la pieza" required>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <input type="text" class="form-control" name="cantidad" placeholder="unidades de la pieza" required>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <input type="date" value="{{fecha}}" class="form-control" name="fecha registro">
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <button type="submit" class="btn btn-primary">
+            Enviar
+            </button>
+        </div>
+    </div>
+</form>
+</div>
+
+<div class="border rounded bg-light">
+    <table class="table table-light table-striped table-hover">
+        <thead>
+        <tr class="table-primary">
+            <td>Pieza</td>
+            <td>Cantidad</td>
+            <td>Fecha registro</td>
+            <td>Operaciones</td>
+        </tr>
+        </thead>
+        <tbody>
+            {% for contact in contacts %}
+                <tr>
+
+                    <td>{{contact.1|capitalize}}</td>
+                    <td>{{contact.2}}</td>
+                    <td>{{contact.3}}</td>
+                    <td>
+                        <a href="/edit/{{contact.0}}"> Edit</a>
+                        <a href="/delete/{{contact.0}}"> Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{{pagination.links}}
+{% endblock %}
+{% block barra%}
+    <div class="d-flex align-items-center">
+                <a class="btn btn-success" href="/salir" role="button">Cerrar sesión</a>
+            </div>
+{% endblock %}
+

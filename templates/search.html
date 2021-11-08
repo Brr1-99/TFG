@@ -1,0 +1,72 @@
+{% extends 'layout.html' %}
+
+{% block body%}
+<div class="container" style="padding : 20px">
+<form action="/search" method="POST">
+    <div class="row">
+        <div class="col-md-3 col-lg-2 ">
+            <div class="form-group">
+                <select class="form-select" name="opciones">
+                  <option selected value="Nombre producto">Nombre </option>
+                  <option value="Fecha registro">Fecha </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <input type="text" class="form-control" name="input2" required>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <button type="submit" class="btn btn-primary">
+            Buscar
+            </button>
+        </div>
+    </div>
+</form>
+    <div class="row">
+        <div class="col-md-6 col-lg-3 ">
+            <a href="/index">
+                <button type="submit" class="btn btn-primary">Añadir</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% if busqueda|length >= 2 %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <p> Se han encontrado {{ busqueda | length }} coincidencias</p>
+        <p> Existen {{datos[0][0]}} unidades del producto buscado </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% else %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <p> Se ha encontrado {{ busqueda | length }} coincidencia</p>
+        <p> Existen {{datos[0][0]}} unidades del producto buscado </p>
+         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+<div class="border rounded bg-light">
+    <table class="table table-light table-striped table-hover">
+        <thead>
+        <tr class="table-primary">
+            <td>Pieza</td>
+            <td>Cantidad</td>
+            <td>Fecha registro</td>
+            <td>Operaciones</td>
+        </tr>
+        </thead>
+        <tbody>
+            {% for resultado in busqueda %}
+                <tr>
+                    <td>{{resultado.1|capitalize}}</td>
+                    <td>{{resultado.2}}</td>
+                    <td>{{resultado.3}}</td>
+                    <td>
+                        <a href="/edit/{{resultado.0}}"> Edit</a>
+                        <a href="/delete/{{resultado.0}}"> Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
