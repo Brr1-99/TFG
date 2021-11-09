@@ -63,9 +63,9 @@ def registrar():
         session['Nombre registro'] = nombre
         session['Correo registro'] = correo
 
-        flash("Se ha registrado correctamente")
+        flash("Se ha registrado correctamente. Por favor inicie sesión")
 
-        return redirect(url_for('ingresar'))
+        return render_template('ingresar.html')
 
 
 @app.route("/ingresar", methods=["GET", "POST"])
