@@ -15,7 +15,7 @@ app.secret_key = "sE+gcUVWsU491sJ"
 db = SQLAlchemy(app)
 
 
-class Prueba(db.Model):
+class Maquina_Herramienta(db.Model):
     __bind_key__ = 'inventario'
     id = db.Column('id', db.Integer, primary_key=True)
     location = db.Column('Localización', db.String(50), nullable=False)
