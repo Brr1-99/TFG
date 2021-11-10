@@ -15,15 +15,40 @@ app.secret_key = "sE+gcUVWsU491sJ"
 db = SQLAlchemy(app)
 
 
-class Maquina_Herramienta(db.Model):
+class maquina_herramienta(db.Model):
     __bind_key__ = 'inventario'
     id = db.Column('id', db.Integer, primary_key=True)
-    location = db.Column('Localización', db.String(50), nullable=False)
-    description = db.Column('Descripción', db.String(100), nullable=False)
+    location = db.Column('Location', db.String(50), nullable=False)
+    description = db.Column('Description', db.String(100), nullable=False)
+    lista = db.relationship('Lista', backref='maquina_herramienta', uselist=False)
 
     def __init__(self, location, description):
         self.location = location
         self.description = description
+
+
+Lista_Componentes = db.Table('Lista_Componentes', db.Column('id_list', db.Integer, db.ForeignKey('lista.id_list')), db.Column('id_component', db.Integer, db.ForeignKey('component.id_component')))
+
+
+class Lista(db.Model):
+    __bind_key__ = 'inventario'
+    id_list = db.Column('id', db.Integer, primary_key=True)
+    id_maquina = db.Column(db.Integer, db.ForeignKey('maquina_herramienta.id'))
+    details = db.relationship('Componente', secondary=Lista_Componentes, backref=db.backref('details', lazy='dynamic'))
+
+    def __init__(self, id_maquina):
+        self.id_maquina = id_maquina
+
+
+class Componente(db.Model):
+    __bind_key__ = 'inventario'
+    id_component = db.Column('id', db.Integer, primary_key=True)
+    tipo = db.Column('Tipo', db.String(50), nullable=False)
+    cost = db.Column('Coste', db.Integer, nullable=False)
+
+    def __init__(self, tipo, cost):
+        self.type = tipo
+        self.cost = cost
 
 
 # Rutas Web
