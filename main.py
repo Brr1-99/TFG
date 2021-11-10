@@ -14,6 +14,16 @@ app.config['MYSQL_DB'] = 'prueba'
 
 mysql = MySQL(app)
 
+app2 = Flask(__name__)
+
+# Conexión MySQL
+app2.config['MYSQL_HOST'] = 'localhost'
+app2.config['MYSQL_USER'] = 'root'
+app2.config['MYSQL_PASSWORD'] = ''
+app2.config['MYSQL_DB'] = 'Inventario'
+
+mysql2 = MySQL(app2)
+
 # Encriptamiento
 semilla = bcrypt.gensalt()
 
