@@ -268,8 +268,6 @@ def search():
         return render_template('ingresar.html')
 
 # Funciones Recurrentes
-
-
 def comprobar_sesion():
     validez = False
     nombre = session.get('Nombre registro')
