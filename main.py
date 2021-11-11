@@ -131,16 +131,25 @@ def index():
 
         datos = cursor.fetchall()
         total = len(datos)
-        cur = mysql.connection.cursor()
+        cursor.close()
 
-        cur.execute('Select * FROM vigo ORDER BY `Fecha Modificación` DESC LIMIT %s OFFSET %s', (limit, offset))
+        cursor2 = mysql.connection.cursor()
 
-        ult_valores = cur.fetchall()
-        cur.close()
+        cursor2.execute('Select * FROM vigo ORDER BY `Fecha Modificación` DESC LIMIT %s OFFSET %s', (limit, offset))
+
+        ult_valores = cursor2.fetchall()
+        cursor2.close()
+
+        cursor3 = mysql.connection.cursor()
+
+        cursor3.execute('Select * FROM inventario.componente')
+
+        inventario = cursor3.fetchall()
+        cursor3.close()
 
         pagination = Pagination(page=page, per_page=limit, total=total, record_name='index')
         return render_template('index.html',
-                               pagination=pagination, contacts=ult_valores, mensaje=mensaje_error, fecha=fecha_hoy)
+                               pagination=pagination, contacts=ult_valores, mensaje=mensaje_error, fecha=fecha_hoy, inventario=inventario)
     else:
         return render_template('ingresar.html')
 

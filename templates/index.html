@@ -74,7 +74,6 @@
         <tbody>
             {% for contact in contacts %}
                 <tr>
-
                     <td>{{contact.1|capitalize}}</td>
                     <td>{{contact.2}}</td>
                     <td>{{contact.3}}</td>
@@ -88,6 +87,33 @@
     </table>
 </div>
 {{pagination.links}}
+<div class="border rounded bg-light">
+    <table class="table table-light table-striped table-hover">
+        <thead>
+        <tr class="table-primary">
+            <td>Nombre</td>
+            <td>Tipo</td>
+            <td>Coste</td>
+            <td>Localización</td>
+            <td>Operaciones</td>
+        </tr>
+        </thead>
+        <tbody>
+            {% for item in inventario %}
+                <tr>
+                    <td>{{item.1|capitalize}}</td>
+                    <td>{{item.2}}</td>
+                    <td>{{item.3}}</td>
+                    <td>{{item.4}}</td>
+                    <td>
+                        <a href="/edit/{{item.1}}"> Edit</a>
+                        <a href="/delete/{{item.1}}"> Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
 {% block barra%}
     <div class="d-flex align-items-center">
