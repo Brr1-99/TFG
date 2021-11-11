@@ -28,12 +28,6 @@ fecha_hoy = date.today()
 # Rutas Web
 @app.route('/')
 def main():
-    cursor = mysql.connection.cursor()
-
-    cursor.execute('Select * FROM inventario.componente ')
-
-    datos = cursor.fetchall()
-    print(datos)
     return render_template('portada.html')
 
 
