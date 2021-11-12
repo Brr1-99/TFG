@@ -43,26 +43,26 @@
 <div class="container" style="padding : 20px">
 <form action="/add_contact" method="POST">
     <div class="row">
-        <div class="col-md-5 col-lg-2">
+        <div class="col-md-4 col-lg-2">
             <input type="text" class="form-control" name="pieza" placeholder="nombre" required>
         </div>
-        <div class="col-md-5 col-lg-2">
+        <div class="col-md-4 col-lg-2">
             <div class="form-group">
                     <select class="form-select" name="tipos">
-                        <option selected value="Eléctrico">Eléctrico </option>
+                        <option value="Eléctrico">Eléctrico </option>
                         <option value="Control">Control </option>
                         <option value="Mecánico">Mecánico </option>
                         <option value="Neumático">Neumático </option>
                     </select>
             </div>
         </div>
-        <div class="col-md-5 col-lg-2">
+        <div class="col-md-2 col-lg-1">
             <input type="text" class="form-control" name="coste" placeholder="coste" required>
         </div>
-         <div class="col-md-5 col-lg-2">
+         <div class="col-md-4 col-lg-2">
             <input type="text" class="form-control" name="lugar" placeholder="localización" required>
         </div>
-        <div class="col-md-5 col-lg-2">
+        <div class="col-md-4 col-lg-2">
             <button type="submit" class="btn btn-primary">
             Enviar
             </button>
@@ -90,8 +90,8 @@
                     <td>{{item.3}}</td>
                     <td>{{item.4}}</td>
                     <td>
-                        <a href="/edit/{{item.0}}"> Edit</a>
-                        <a href="/delete/{{item.0}}"> Delete</a>
+                        <a href="/edit/componente={{item.0}}"> Edit</a>
+                        <a href="/delete/componente={{item.0}}"> Delete</a>
                     </td>
                 </tr>
             {% endfor %}

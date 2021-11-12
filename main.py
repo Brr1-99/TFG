@@ -156,7 +156,7 @@ def add_contact():
         return render_template('ingresar.html')
 
 
-@app.route('/edit/<string:id>')
+@app.route('/edit/componente=<string:id>')
 def edit_contact(id):
     global mensaje_error
     login = comprobar_sesion()
@@ -169,7 +169,7 @@ def edit_contact(id):
         return render_template('ingresar.html')
 
 
-@app.route('/update/<string:id>', methods=['POST'])
+@app.route('/update/componente=<string:id>', methods=['POST'])
 def update_contact(id):
     global mensaje_error
     login = comprobar_sesion()
@@ -183,11 +183,12 @@ def update_contact(id):
 
             cursor1.execute("""
                 UPDATE `componente`
-                SET `nombre componente ` = %s,
+                SET `Nombre Componente` = %s,
                 `tipo` = %s,
                 `coste` = %s,
                 `localización`= %s
                 WHERE id = %s """, (pieza, tipo, coste, lugar, id))
+
             mydb1.commit()
             flash('Pieza actualizada correctamente')
             return redirect(url_for('index'))
@@ -195,7 +196,7 @@ def update_contact(id):
         return render_template('ingresar.html')
 
 
-@app.route('/delete/<string:id>')
+@app.route('/delete/componente=<string:id>')
 def delete_contact(id):
     login = comprobar_sesion()
     if login:

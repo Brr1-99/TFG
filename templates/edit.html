@@ -1,14 +1,33 @@
 {% extends 'layout.html' %}
 
 {% block body%}
-<form action="/update/{{contact.0}}" method="POST">
-    <input type="text" name="pieza" placeholder="nombre de la pieza" value="{{contact.1}}" required>
-    <input type="text" name="tipo" placeholder="tipo de pieza" value="{{contact.2}}" required>
-    <input type="text" name="coste" placeholder="coste de la pieza" value="{{contact.3}}" required>
-    <input type="text" name="lugar" placeholder="localización de la pieza" value="{{contact.4}}" required>
-    <button type="submit">
-        Enviar
-    </button>
+<form action="/update/componente={{contact.0}}" method="POST">
+    <div class="row">
+         <div class="col-md-4 col-lg-2">
+            <input type="text" name="pieza" placeholder="nombre de la pieza" value="{{contact.1}}" required>
+         </div>
+        <div class="col-md-4 col-lg-2">
+                <div class="form-group">
+                        <select class="form-select" name="tipos">
+                            <option value="Eléctrico">Eléctrico </option>
+                            <option value="Control">Control </option>
+                            <option value="Mecánico">Mecánico </option>
+                            <option value="Neumático">Neumático </option>
+                        </select>
+                </div>
+            </div>
+        <div class="col-md-2 col-lg-1">
+            <input type="text" name="coste" placeholder="coste de la pieza" value="{{contact.3}}" required>
+        </div>
+        <div class="col-md-4 col-lg-2">
+            <input type="text" name="lugar" placeholder="localización de la pieza" value="{{contact.4}}" required>
+        </div>
+        <div class="col-md-4 col-lg-2">
+            <button type="submit">
+                Enviar
+            </button>
+        </div>
+    </div>
 </form>
 
 {% endblock %}
