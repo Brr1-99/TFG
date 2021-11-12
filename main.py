@@ -66,7 +66,6 @@ def registrar():
         cursor2.execute("""INSERT INTO `Usuarios`(`Nombre`,`Correo registro`, `Contraseña`)
                         VALUES ( %s, %s, %s )""", (nombre, correo, encriptado))
         mydb2.commit()
-        cursor2.close()
 
         session['Nombre registro'] = nombre
         session['Correo registro'] = correo
@@ -96,8 +95,6 @@ def ingresar():
         mydb2.commit()
 
         usuario = cursor2.fetchone()
-
-        cursor2.close()
 
         if usuario:
             encriptado = usuario[1]
@@ -129,9 +126,8 @@ def index():
     login = comprobar_sesion()
     if login:
         global fecha_hoy
-        cursor1.execute('Select * FROM inventario.componente')
+        cursor1.execute('Select * FROM componente')
         inventario = cursor1.fetchall()
-        cursor1.close()
 
         return render_template('index.html', mensaje=mensaje_error, fecha=fecha_hoy, inventario=inventario)
     else:
@@ -141,18 +137,18 @@ def index():
 @app.route('/add_contact', methods=['POST'])
 def add_contact():
     global mensaje_error
-    global fecha_hoy
     login = comprobar_sesion()
     if login:
         if request.method == 'POST':
             mensaje_error = False
             pieza = request.form['pieza']
-            cantidad = request.form['cantidad']
-            fecha = request.form['fecha registro']
-            if not fecha:
-                fecha = fecha_hoy
-            cursor1.execute("""INSERT INTO `vigo`(`nombre producto`,`cantidad`, `fecha registro`)
-             VALUES ( %s, %s, %s )""", (pieza, cantidad, fecha))
+            tipo = request.form['tipos']
+            coste = request.form['coste']
+            lugar = request.form['lugar']
+
+            cursor1.execute("""INSERT INTO `componente`(`nombre componente`, `tipo`, `coste`, `localización`)
+             VALUES ( %s, %s, %s, %s )""", (pieza, tipo, coste, lugar))
+
             mydb1.commit()
             flash('Item añadido correctamente')
             return redirect(url_for('index'))
@@ -181,14 +177,17 @@ def update_contact(id):
         if request.method == 'POST':
             mensaje_error = False
             pieza = request.form['pieza']
-            cantidad = request.form['cantidad']
-            fecha = request.form['fecha registro']
+            tipo = request.form['tipos']
+            coste = request.form['coste']
+            lugar = request.form['lugar']
+
             cursor1.execute("""
-                UPDATE `vigo`
-                SET `nombre producto` = %s,
-                `cantidad` = %s,
-                `fecha registro`= %s
-                WHERE id = %s """, (pieza, cantidad, fecha, id))
+                UPDATE `componente`
+                SET `nombre componente ` = %s,
+                `tipo` = %s,
+                `coste` = %s,
+                `localización`= %s
+                WHERE id = %s """, (pieza, tipo, coste, lugar, id))
             mydb1.commit()
             flash('Pieza actualizada correctamente')
             return redirect(url_for('index'))
@@ -240,7 +239,6 @@ def search():
                 DESC LIMIT {2} OFFSET {3}""".format(opcion, valor, limit, offset))
 
                 valores = cursor1.fetchall()
-                cursor1.close()
 
                 pagination2 = Pagination(page=page, per_page=limit, total=total, record_name='search')
 

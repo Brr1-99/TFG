@@ -43,16 +43,26 @@
 <div class="container" style="padding : 20px">
 <form action="/add_contact" method="POST">
     <div class="row">
-        <div class="col-md-6 col-lg-3">
-            <input type="text" class="form-control" name="pieza" placeholder="nombre de la pieza" required>
+        <div class="col-md-5 col-lg-2">
+            <input type="text" class="form-control" name="pieza" placeholder="nombre" required>
         </div>
-        <div class="col-md-6 col-lg-3">
-            <input type="text" class="form-control" name="cantidad" placeholder="unidades de la pieza" required>
+        <div class="col-md-5 col-lg-2">
+            <div class="form-group">
+                    <select class="form-select" name="tipos">
+                        <option selected value="Eléctrico">Eléctrico </option>
+                        <option value="Control">Control </option>
+                        <option value="Mecánico">Mecánico </option>
+                        <option value="Neumático">Neumático </option>
+                    </select>
+            </div>
         </div>
-        <div class="col-md-6 col-lg-3">
-            <input type="date" value="{{fecha}}" class="form-control" name="fecha registro">
+        <div class="col-md-5 col-lg-2">
+            <input type="text" class="form-control" name="coste" placeholder="coste" required>
         </div>
-        <div class="col-md-6 col-lg-3">
+         <div class="col-md-5 col-lg-2">
+            <input type="text" class="form-control" name="lugar" placeholder="localización" required>
+        </div>
+        <div class="col-md-5 col-lg-2">
             <button type="submit" class="btn btn-primary">
             Enviar
             </button>

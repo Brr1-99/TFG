@@ -3,8 +3,9 @@
 {% block body%}
 <form action="/update/{{contact.0}}" method="POST">
     <input type="text" name="pieza" placeholder="nombre de la pieza" value="{{contact.1}}" required>
-    <input type="text" name="cantidad" placeholder="unidades de la pieza" value="{{contact.2}}" required>
-    <input type="text" name="fecha registro" placeholder="fecha registro" value="{{contact.3}}" required>
+    <input type="text" name="tipo" placeholder="tipo de pieza" value="{{contact.2}}" required>
+    <input type="text" name="coste" placeholder="coste de la pieza" value="{{contact.3}}" required>
+    <input type="text" name="lugar" placeholder="localización de la pieza" value="{{contact.4}}" required>
     <button type="submit">
         Enviar
     </button>
