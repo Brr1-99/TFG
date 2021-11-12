@@ -1,18 +1,26 @@
 from _datetime import date
+import MySQLdb
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-from flask_mysqldb import MySQL
 from flask_paginate import Pagination, get_page_parameter
 import bcrypt
 
+# Conexión a bases de datos
+mydb1 = MySQLdb.connect(host='localhost',
+                        user='root',
+                        password='',
+                        db='inventario')
+
+cursor1 = mydb1.cursor()
+
+mydb2 = MySQLdb.connect(host='localhost',
+                        user='root',
+                        password='',
+                        db='manten_correctivo')
+
+cursor2 = mydb2.cursor()
+
+# Creación API
 app = Flask(__name__)
-
-# Conexión MySQL
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'prueba'
-
-mysql = MySQL(app)
 
 # Encriptamiento
 semilla = bcrypt.gensalt()
@@ -55,10 +63,10 @@ def registrar():
         password_encode = password.encode("utf-8")
         encriptado = bcrypt.hashpw(password_encode, semilla)
 
-        cursor = mysql.connection.cursor()
-        cursor.execute("""INSERT INTO `Usuarios`(`Nombre registro`,`Correo registro`, `Contraseña`)
-                VALUES ( %s, %s, %s )""", (nombre, correo, encriptado))
-        mysql.connection.commit()
+        cursor2.execute("""INSERT INTO `Usuarios`(`Nombre`,`Correo registro`, `Contraseña`)
+                        VALUES ( %s, %s, %s )""", (nombre, correo, encriptado))
+        mydb2.commit()
+        cursor2.close()
 
         session['Nombre registro'] = nombre
         session['Correo registro'] = correo
@@ -80,17 +88,16 @@ def ingresar():
         correo = request.form['Correo login']
         password = request.form['Password login']
         password_encode = password.encode('utf-8')
-        cursor = mysql.connection.cursor()
 
-        cursor.execute("""SELECT  `Correo registro` , `Contraseña`, `Nombre registro`
+        cursor2.execute("""SELECT  `Correo registro` , `Contraseña`, `Nombre`
         FROM `Usuarios`
         WHERE `Correo registro` = %s """, [correo])
 
-        mysql.connection.commit()
+        mydb2.commit()
 
-        usuario = cursor.fetchone()
+        usuario = cursor2.fetchone()
 
-        cursor.close()
+        cursor2.close()
 
         if usuario:
             encriptado = usuario[1]
@@ -122,34 +129,11 @@ def index():
     login = comprobar_sesion()
     if login:
         global fecha_hoy
-        page = request.args.get(get_page_parameter(), type=int, default=1)
-        limit = 5
-        offset = page*limit-limit
-        cursor = mysql.connection.cursor()
+        cursor1.execute('Select * FROM inventario.componente')
+        inventario = cursor1.fetchall()
+        cursor1.close()
 
-        cursor.execute('Select * FROM vigo ')
-
-        datos = cursor.fetchall()
-        total = len(datos)
-        cursor.close()
-
-        cursor2 = mysql.connection.cursor()
-
-        cursor2.execute('Select * FROM vigo ORDER BY `Fecha Modificación` DESC LIMIT %s OFFSET %s', (limit, offset))
-
-        ult_valores = cursor2.fetchall()
-        cursor2.close()
-
-        cursor3 = mysql.connection.cursor()
-
-        cursor3.execute('Select * FROM inventario.componente')
-
-        inventario = cursor3.fetchall()
-        cursor3.close()
-
-        pagination = Pagination(page=page, per_page=limit, total=total, record_name='index')
-        return render_template('index.html',
-                               pagination=pagination, contacts=ult_valores, mensaje=mensaje_error, fecha=fecha_hoy, inventario=inventario)
+        return render_template('index.html', mensaje=mensaje_error, fecha=fecha_hoy, inventario=inventario)
     else:
         return render_template('ingresar.html')
 
@@ -167,10 +151,9 @@ def add_contact():
             fecha = request.form['fecha registro']
             if not fecha:
                 fecha = fecha_hoy
-            cursor = mysql.connection.cursor()
-            cursor.execute("""INSERT INTO `vigo`(`nombre producto`,`cantidad`, `fecha registro`)
+            cursor1.execute("""INSERT INTO `vigo`(`nombre producto`,`cantidad`, `fecha registro`)
              VALUES ( %s, %s, %s )""", (pieza, cantidad, fecha))
-            mysql.connection.commit()
+            mydb1.commit()
             flash('Item añadido correctamente')
             return redirect(url_for('index'))
     else:
@@ -183,9 +166,8 @@ def edit_contact(id):
     login = comprobar_sesion()
     if login:
         mensaje_error = False
-        cursor = mysql.connection.cursor()
-        cursor.execute('Select * FROM vigo WHERE id = {0}'.format(id))
-        datos = cursor.fetchall()
+        cursor1.execute('Select * FROM componente WHERE id = {0}'.format(id))
+        datos = cursor1.fetchall()
         return render_template('edit.html', contact=datos[0])
     else:
         return render_template('ingresar.html')
@@ -201,14 +183,13 @@ def update_contact(id):
             pieza = request.form['pieza']
             cantidad = request.form['cantidad']
             fecha = request.form['fecha registro']
-            cursor = mysql.connection.cursor()
-            cursor.execute("""
+            cursor1.execute("""
                 UPDATE `vigo`
                 SET `nombre producto` = %s,
                 `cantidad` = %s,
                 `fecha registro`= %s
                 WHERE id = %s """, (pieza, cantidad, fecha, id))
-            mysql.connection.commit()
+            mydb1.commit()
             flash('Pieza actualizada correctamente')
             return redirect(url_for('index'))
     else:
@@ -219,9 +200,8 @@ def update_contact(id):
 def delete_contact(id):
     login = comprobar_sesion()
     if login:
-        cursor = mysql.connection.cursor()
-        cursor.execute('DELETE FROM `vigo` WHERE id = {0}'.format(id))
-        mysql.connection.commit()
+        cursor1.execute('DELETE FROM `componente` WHERE id = {0}'.format(id))
+        mydb1.commit()
         flash('Item eliminado correctamente')
         return redirect(url_for('index'))
     else:
@@ -237,16 +217,15 @@ def search():
             mensaje_error = False
             valor = request.form['input2']
             opcion = request.form['opciones']
-            cursor = mysql.connection.cursor()
-            cursor.execute(""" SELECT *
+
+            cursor1.execute(""" SELECT *
             FROM `vigo`
             WHERE `{0}`= '{1}'""".format(opcion, valor))
-            mysql.connection.commit()
-            datos = cursor.fetchall()
+            mydb1.commit()
+            datos = cursor1.fetchall()
 
-            cursorcuenta = mysql.connection.cursor()
-            cursorcuenta.execute(""" SELECT SUM(`cantidad`) FROM `vigo` WHERE `{0}` = '{1}'""".format(opcion, valor))
-            datoscuenta = cursorcuenta.fetchall()
+            cursor1.execute(""" SELECT SUM(`cantidad`) FROM `vigo` WHERE `{0}` = '{1}'""".format(opcion, valor))
+            datoscuenta = cursor1.fetchall()
 
             page = request.args.get(get_page_parameter(), type=int, default=1)
             limit = 5
@@ -255,15 +234,13 @@ def search():
             total = len(datos)
 
             if total > 0:
-                cur = mysql.connection.cursor()
-
-                cur.execute("""Select *
+                cursor1.execute("""Select *
                 FROM `vigo`
                 WHERE `{0}`= '{1}'ORDER BY `Fecha Modificación`
                 DESC LIMIT {2} OFFSET {3}""".format(opcion, valor, limit, offset))
 
-                valores = cur.fetchall()
-                cur.close()
+                valores = cursor1.fetchall()
+                cursor1.close()
 
                 pagination2 = Pagination(page=page, per_page=limit, total=total, record_name='search')
 
@@ -275,6 +252,7 @@ def search():
             return redirect(url_for('index'))
     else:
         return render_template('ingresar.html')
+
 
 # Funciones Recurrentes
 def comprobar_sesion():
