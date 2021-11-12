@@ -43,7 +43,7 @@ def main():
 def inicio():
     login = comprobar_sesion()
     if login:
-        return render_template('index.html')
+        return render_template('inicio.html')
     else:
         return render_template('ingresar.html')
 
