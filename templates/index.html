@@ -70,34 +70,34 @@
     </div>
 </form>
 </div>
+{% if base == 1%}
+    {% for dato in datos%}
+        <div class="border rounded bg-light">
+            <table class="table table-light table-striped table-hover">
+                <thead>
+                    <tr class="table-primary">
+                        {% for valor in dato.1[1:-1] %}
+                            <td>{{valor.0}}</td>
+                        {% endfor %}
+                            <td>Operaciones</td>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            {% for i in range(1, (dato.0.0|length)-1) %}
+                                <td>{{dato.0.0[i]}}</td>
+                            {% endfor %}
+                            <td>
+                                <a href="/edit/{{base}}/{{dato.0.0}}"> Edit</a>
+                                <a href="/delete/{{base}}/{{dato.0}}"> Delete</a>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endfor %}
+{% endif %}
 
-<div class="border rounded bg-light">
-    <table class="table table-light table-striped table-hover">
-        <thead>
-        <tr class="table-primary">
-            <td>Nombre</td>
-            <td>Tipo</td>
-            <td>Coste</td>
-            <td>Localización</td>
-            <td>Operaciones</td>
-        </tr>
-        </thead>
-        <tbody>
-            {% for item in inventario %}
-                <tr>
-                    <td>{{item.1|capitalize}}</td>
-                    <td>{{item.2}}</td>
-                    <td>{{item.3}}</td>
-                    <td>{{item.4}}</td>
-                    <td>
-                        <a href="/edit/componente={{item.0}}"> Edit</a>
-                        <a href="/delete/componente={{item.0}}"> Delete</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
 {% endblock %}
 {% block barra%}
     <div class="d-flex align-items-center">

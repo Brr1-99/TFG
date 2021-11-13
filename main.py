@@ -121,15 +121,13 @@ def salir():
     return render_template('portada.html')
 
 
-@app.route('/index')
-def index():
+@app.route('/index/<string:db>')
+def index(db):
     login = comprobar_sesion()
     if login:
         global fecha_hoy
-        cursor1.execute('Select * FROM componente')
-        inventario = cursor1.fetchall()
-
-        return render_template('index.html', mensaje=mensaje_error, fecha=fecha_hoy, inventario=inventario)
+        datos_db, base = comprobar_db(db)
+        return render_template('index.html', mensaje=mensaje_error, fecha=fecha_hoy, datos=datos_db, base=base)
     else:
         return render_template('ingresar.html')
 
@@ -260,6 +258,26 @@ def comprobar_sesion():
     if nombre:
         validez = True
     return validez
+
+
+def comprobar_db(db):
+    datos = []
+    base = 0
+    if db == 'inventario':
+        cursor1.execute('Select * FROM componente')
+        d1 = cursor1.fetchall()
+        cursor1.execute('Show Columns FROM componente')
+        c1 = cursor1.fetchall()
+        datos.append([d1, c1])
+        cursor1.execute('Select * FROM maquina_herramienta')
+        d2 = cursor1.fetchall()
+        cursor1.execute('Show Columns FROM maquina_herramienta')
+        c2 = cursor1.fetchall()
+        datos.append([d2,c2])
+        base = 1
+    else:
+        cursordb = 2
+    return datos, base
 
 
 if __name__ == '__main__':
