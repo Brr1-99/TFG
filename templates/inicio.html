@@ -1,48 +1,76 @@
 {%extends 'layout.html'%}
 {% block body%}
 <div class="container" style="margin-top: 50px">
-<div class="row">
-  <div class="col-sm-4">
-    <div class="card">
-      <div class="card-body">
-          <div class="accordion accordion-flush" id="acordeon-1">
-              <div class="accordion-item">
-                <h3 class="accordion-header" id="flush-cabecera-1">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-1" aria-expanded="false" aria-controls="flush-1">
-                    <h5>Inventario</h5>
-                  </button>
-                </h3>
-                <div id="flush-1" class="accordion-collapse collapse" aria-labelledby="flush-cabecera-1" data-bs-parent="#acordeon-1">
-                  <div class="card">
-                      <div class="card-body">
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-danger">Visitar el inventario</a>
-                      </div>
-                    </div>
-                </div>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-4">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Registro de Incidencias</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
-    </div>
-  </div>
+  <div class="row">
     <div class="col-sm-4">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Planificación de mantenimiento</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-success">Go somewhere</a>
+      <div class="card">
+        <div class="card-body">
+            <div class="accordion accordion-flush" id="acordeon-1">
+                <div class="accordion-item">
+                  <h3 class="accordion-header" id="flush-cabecera-1">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-1" aria-expanded="false" aria-controls="flush-1">
+                      <h5>Inventario</h5>
+                    </button>
+                  </h3>
+                  <div id="flush-1" class="accordion-collapse collapse" aria-labelledby="flush-cabecera-1" data-bs-parent="#acordeon-1">
+                    <div class="card">
+                        <div class="card-body">
+                          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                          <a href=# class="btn btn-danger">Visitar el inventario</a>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+            </div>
+        </div>
       </div>
     </div>
+    <div class="col-sm-4">
+      <div class="card">
+        <div class="card-body">
+            <div class="accordion accordion-flush" id="acordeon-2">
+                <div class="accordion-item">
+                  <h3 class="accordion-header" id="flush-cabecera-2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-2" aria-expanded="false" aria-controls="flush-2">
+                      <h5>Registro de Incidencias</h5>
+                    </button>
+                  </h3>
+                  <div id="flush-2" class="accordion-collapse collapse" aria-labelledby="flush-cabecera-2" data-bs-parent="#acordeon-2">
+                    <div class="card">
+                        <div class="card-body">
+                          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                          <a href=# class="btn btn-success">Visitar el Registro</a>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="card">
+        <div class="card-body">
+            <div class="accordion accordion-flush" id="acordeon-3">
+                <div class="accordion-item">
+                  <h3 class="accordion-header" id="flush-cabecera-3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-3" aria-expanded="false" aria-controls="flush-3">
+                      <h5>Mantenimiento preventivo</h5>
+                    </button>
+                  </h3>
+                  <div id="flush-3" class="accordion-collapse collapse" aria-labelledby="flush-cabecera-3" data-bs-parent="#acordeon-3">
+                    <div class="card">
+                        <div class="card-body">
+                          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                          <a href=# class="btn btn-info">Zona de Mantenimiento</a>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      </div>
   </div>
-</div>
 </div>
 {% endblock %}
