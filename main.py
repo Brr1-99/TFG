@@ -126,30 +126,53 @@ def index(db):
     login = comprobar_sesion()
     if login:
         global fecha_hoy
-        datos_db, base = comprobar_db(db)
+        datos_db, base = db_for_index(db)
         return render_template('index.html', mensaje=mensaje_error, fecha=fecha_hoy, datos=datos_db, base=base)
     else:
         return render_template('ingresar.html')
 
 
-@app.route('/add_contact', methods=['POST'])
-def add_contact():
+@app.route('/add/<string:db>/<string:table>')
+def add(db, table):
+    global mensaje_error
+    login = comprobar_sesion()
+    if login:
+        mensaje_error = False
+        col = db_for_add(db, table)
+        flash('Conexión con la tabla {0} realizada con éxito.'.format(table))
+        return render_template('add.html', mensaje=mensaje_error, columns=col)
+    else:
+        return render_template('ingresar.html')
+
+
+@app.route('/add', methods=['POST'])
+def add_table():
     global mensaje_error
     login = comprobar_sesion()
     if login:
         if request.method == 'POST':
             mensaje_error = False
-            pieza = request.form['pieza']
-            tipo = request.form['tipos']
-            coste = request.form['coste']
-            lugar = request.form['lugar']
 
-            cursor1.execute("""INSERT INTO `componente`(`nombre componente`, `tipo`, `coste`, `localización`)
-             VALUES ( %s, %s, %s, %s )""", (pieza, tipo, coste, lugar))
+            last_url = str(request.referrer)
+            table = last_url.split('/')[-1]
+            db = last_url.split('/')[-2]
 
-            mydb1.commit()
-            flash('Item añadido correctamente')
-            return redirect(url_for('index'))
+            col_name = []
+            cursor1.execute('Show Columns FROM {0}'.format(table))
+            columns = cursor1.fetchall()
+            for column in columns[1:-1]:
+                col_name.append(column[0])
+
+            inputs = []
+            for i in range(len(col_name)):
+                inputs.append(request.form['col.{0}'.format(i+1)])
+
+            print(col_name)
+            print(inputs)
+
+            print('INSERT INTO `{0}` {1} VALUES {2}'.format(table, col_name, inputs))
+
+            return redirect(url_for('index', db=db))
     else:
         return render_template('ingresar.html')
 
@@ -260,24 +283,30 @@ def comprobar_sesion():
     return validez
 
 
-def comprobar_db(db):
+def db_for_index(db):
     datos = []
-    base = 0
     if db == 'inventario':
         cursor1.execute('Select * FROM componente')
         d1 = cursor1.fetchall()
         cursor1.execute('Show Columns FROM componente')
         c1 = cursor1.fetchall()
-        datos.append([d1, c1])
+        datos.append([d1, c1, 'componente'])
         cursor1.execute('Select * FROM maquina_herramienta')
         d2 = cursor1.fetchall()
         cursor1.execute('Show Columns FROM maquina_herramienta')
         c2 = cursor1.fetchall()
-        datos.append([d2,c2])
-        base = 1
+        datos.append([d2, c2, 'maquina_herramienta'])
     else:
-        cursordb = 2
-    return datos, base
+        base = 2
+    return datos, db
+
+
+def db_for_add(db, table):
+    col = []
+    if db == 'inventario':
+        cursor1.execute('Show Columns FROM {0}'.format(table))
+        col = cursor1.fetchall()
+    return col
 
 
 if __name__ == '__main__':
