@@ -163,14 +163,15 @@ def add_table():
             for column in columns[1:-1]:
                 col_name.append(column[0])
 
-            inputs = []
+            datas = []
             for i in range(len(col_name)):
-                inputs.append(request.form['col.{0}'.format(i+1)])
+                datas.append(request.form['col.{0}'.format(i+1)])
 
-            print(col_name)
-            print(inputs)
+            names = to_mysql(col_name)
 
-            print('INSERT INTO `{0}` {1} VALUES {2}'.format(table, col_name, inputs))
+            cursor1.execute('INSERT INTO `{0}` {1} VALUES {2}'.format(table, names, tuple(datas)))
+            mydb1.commit()
+            flash('Pieza añadida a la tabla {0} correctamente'.format(table))
 
             return redirect(url_for('index', db=db))
     else:
@@ -307,6 +308,11 @@ def db_for_add(db, table):
         cursor1.execute('Show Columns FROM {0}'.format(table))
         col = cursor1.fetchall()
     return col
+
+
+def to_mysql(data):
+    mysql_data = str(tuple(data)).replace("'", "`")
+    return mysql_data
 
 
 if __name__ == '__main__':

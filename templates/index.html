@@ -83,15 +83,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                            <tr>
-                                {% for i in range(0, (dato.0.0|length)-1) %}
-                                    <td>{{dato.0.0[i]}}</td>
-                                {% endfor %}
-                                <td>
-                                    <a href="/edit/{{base}}/{{dato.2}}/{{dato.0.0.0}}"> Edit</a>
-                                    <a href="/delete/{{base}}/{{dato.2}}//{{dato.0.0.0}}"> Delete</a>
-                                </td>
-                            </tr>
+                        {% for i in range (0, dato.0|length)%}
+                                <tr>
+                                    {% for j in range(0, (dato.0[i]|length-1)) %}
+                                        <td>{{dato.0[i][j]}}</td>
+                                    {% endfor %}
+                                    <td>
+                                        <a href="/edit/{{base}}/{{dato.2}}/{{dato.0.0.0}}"> Edit</a>
+                                        <a href="/delete/{{base}}/{{dato.2}}//{{dato.0.0.0}}"> Delete</a>
+                                    </td>
+                                </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
