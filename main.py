@@ -218,14 +218,11 @@ def update_contact():
             for i in range(len(col_name)):
                 datas.append(request.form['contact.{0}'.format(i + 1)])
 
-            names = to_mysql(col_name)
+            text = extractCols(col_name)
             cur.execute("""
                 UPDATE `{0}`
-                SET `Nombre Componente` = %s,
-                `tipo` = %s,
-                `coste` = %s,
-                `localización`= %s
-                WHERE id = {1} """.format(table, id), datas)
+                SET {1}
+                WHERE id = {2} """.format(table, text, id), datas)
 
             datab.commit()
             flash('Pieza actualizada correctamente')
@@ -355,6 +352,14 @@ def db_cursor(db):
 def to_mysql(data):
     mysql_data = str(tuple(data)).replace("'", "`")
     return mysql_data
+
+
+def extractCols(arr_cols):
+    text = ''
+    for col in arr_cols[:-1]:
+        text += "`" + str(col) + "` = %s ,"
+    text += "`" + str(arr_cols[-1]) + "` = %s "
+    return text
 
 
 if __name__ == '__main__':
