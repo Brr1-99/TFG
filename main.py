@@ -216,7 +216,7 @@ def update_contact():
 
             datas = []
             for i in range(len(col_name)):
-                datas.append(request.form['col.{0}'.format(i + 1)])
+                datas.append(request.form['contact.{0}'.format(i + 1)])
 
             names = to_mysql(col_name)
             cur.execute("""
