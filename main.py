@@ -157,9 +157,10 @@ def add_table():
             table = last_url.split('/')[-1]
             db = last_url.split('/')[-2]
 
+            cur, datab = db_cursor(db)
             col_name = []
-            cursor1.execute('Show Columns FROM {0}'.format(table))
-            columns = cursor1.fetchall()
+            cur.execute('Show Columns FROM {0}'.format(table))
+            columns = cur.fetchall()
             for column in columns[1:-1]:
                 col_name.append(column[0])
 
@@ -169,8 +170,8 @@ def add_table():
 
             names = to_mysql(col_name)
 
-            cursor1.execute('INSERT INTO `{0}` {1} VALUES {2}'.format(table, names, tuple(datas)))
-            mydb1.commit()
+            cur.execute('INSERT INTO `{0}` {1} VALUES {2}'.format(table, names, tuple(datas)))
+            datab.commit()
             flash('Pieza añadida a la tabla "{0}" correctamente'.format(table))
 
             return redirect(url_for('index', db=db))
@@ -178,42 +179,57 @@ def add_table():
         return render_template('ingresar.html')
 
 
-@app.route('/edit/componente=<string:id>')
-def edit_contact(id):
+@app.route('/edit/<string:db>/<string:table>/<string:id>')
+def edit_contact(db, table, id):
     global mensaje_error
     login = comprobar_sesion()
     if login:
         mensaje_error = False
-        cursor1.execute('Select * FROM componente WHERE id = {0}'.format(id))
-        datos = cursor1.fetchall()
+        cur, datab = db_cursor(db)
+        cur.execute('Select * FROM {0} WHERE id = {1}'.format(table, id))
+        datos = cur.fetchall()
+        flash('Por favor especifíque los nuevo valores')
         return render_template('edit.html', contact=datos[0])
     else:
         return render_template('ingresar.html')
 
 
-@app.route('/update/componente=<string:id>', methods=['POST'])
-def update_contact(id):
+@app.route('/update', methods=['POST'])
+def update_contact():
     global mensaje_error
     login = comprobar_sesion()
     if login:
         if request.method == 'POST':
             mensaje_error = False
-            pieza = request.form['pieza']
-            tipo = request.form['tipos']
-            coste = request.form['coste']
-            lugar = request.form['lugar']
 
-            cursor1.execute("""
-                UPDATE `componente`
+            last_url = str(request.referrer)
+            id = last_url.split('/')[-1]
+            table = last_url.split('/')[-2]
+            db = last_url.split('/')[-3]
+
+            cur, datab = db_cursor(db)
+            col_name = []
+            cur.execute('Show Columns FROM {0}'.format(table))
+            columns = cur.fetchall()
+            for column in columns[1:-1]:
+                col_name.append(column[0])
+
+            datas = []
+            for i in range(len(col_name)):
+                datas.append(request.form['col.{0}'.format(i + 1)])
+
+            names = to_mysql(col_name)
+            cur.execute("""
+                UPDATE `{0}`
                 SET `Nombre Componente` = %s,
                 `tipo` = %s,
                 `coste` = %s,
                 `localización`= %s
-                WHERE id = %s """, (pieza, tipo, coste, lugar, id))
+                WHERE id = {1} """.format(table, id), datas)
 
-            mydb1.commit()
+            datab.commit()
             flash('Pieza actualizada correctamente')
-            return redirect(url_for('index'))
+            return redirect(url_for('index', db=db))
     else:
         return render_template('ingresar.html')
 
@@ -222,7 +238,7 @@ def update_contact(id):
 def delete_contact(db, table, id):
     login = comprobar_sesion()
     if login:
-        cur, datab = db_for_delete(db)
+        cur, datab = db_cursor(db)
         cur.execute('DELETE FROM `{0}` WHERE id = {1}'.format(table, id))
         datab.commit()
         flash('Item de la tabla "{0}" eliminado correctamente'.format(table))
@@ -327,7 +343,7 @@ def db_for_add(db, table):
     return col
 
 
-def db_for_delete(db):
+def db_cursor(db):
     cursor = cursor1
     mydb = mydb1
     if db == 'inventario':
