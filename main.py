@@ -126,8 +126,8 @@ def index(db):
     login = comprobar_sesion()
     if login:
         global fecha_hoy
-        datos_db, base = db_for_index(db)
-        return render_template('index.html', mensaje=mensaje_error, fecha=fecha_hoy, datos=datos_db, base=base)
+        datos_db, base, pages = db_for_index(db)
+        return render_template('index.html', pagination=pages, mensaje=mensaje_error, fecha=fecha_hoy, datos=datos_db, base=base)
     else:
         return render_template('ingresar.html')
 
@@ -171,7 +171,7 @@ def add_table():
 
             cursor1.execute('INSERT INTO `{0}` {1} VALUES {2}'.format(table, names, tuple(datas)))
             mydb1.commit()
-            flash('Pieza añadida a la tabla {0} correctamente'.format(table))
+            flash('Pieza añadida a la tabla "{0}" correctamente'.format(table))
 
             return redirect(url_for('index', db=db))
     else:
@@ -218,14 +218,15 @@ def update_contact(id):
         return render_template('ingresar.html')
 
 
-@app.route('/delete/componente=<string:id>')
-def delete_contact(id):
+@app.route('/delete/<string:db>/<string:table>/<string:id>')
+def delete_contact(db, table, id):
     login = comprobar_sesion()
     if login:
-        cursor1.execute('DELETE FROM `componente` WHERE id = {0}'.format(id))
-        mydb1.commit()
-        flash('Item eliminado correctamente')
-        return redirect(url_for('index'))
+        cur, datab = db_for_delete(db)
+        cur.execute('DELETE FROM `{0}` WHERE id = {1}'.format(table, id))
+        datab.commit()
+        flash('Item de la tabla "{0}" eliminado correctamente'.format(table))
+        return redirect(url_for('index', db=db))
     else:
         return render_template('ingresar.html')
 
@@ -286,20 +287,36 @@ def comprobar_sesion():
 
 def db_for_index(db):
     datos = []
+    pages = []
     if db == 'inventario':
-        cursor1.execute('Select * FROM componente')
+
+        page = request.args.get(get_page_parameter(), type=int, default=1)
+        limit = 5
+        offset = page * limit - limit
+
+        cursor1.execute('Select * FROM componente ORDER BY `Fecha Modificación` DESC LIMIT %s OFFSET %s', (limit, offset))
         d1 = cursor1.fetchall()
+        t1 = len(d1)
+
         cursor1.execute('Show Columns FROM componente')
         c1 = cursor1.fetchall()
         datos.append([d1, c1, 'componente'])
-        cursor1.execute('Select * FROM maquina_herramienta')
+
+        cursor1.execute('Select * FROM maquina_herramienta ORDER BY `Fecha Modificación` DESC LIMIT %s OFFSET %s', (limit, offset))
         d2 = cursor1.fetchall()
+        t2 = len(d2)
+
         cursor1.execute('Show Columns FROM maquina_herramienta')
         c2 = cursor1.fetchall()
         datos.append([d2, c2, 'maquina_herramienta'])
+
+        pagination = Pagination(page=page, per_page=limit, total=t1, record_name='index')
+        pagination2 = Pagination(page=page, per_page=limit, total=t2, record_name='index')
+        pages.append(pagination)
+        pages.append(pagination2)
     else:
         base = 2
-    return datos, db
+    return datos, db, pages
 
 
 def db_for_add(db, table):
@@ -308,6 +325,15 @@ def db_for_add(db, table):
         cursor1.execute('Show Columns FROM {0}'.format(table))
         col = cursor1.fetchall()
     return col
+
+
+def db_for_delete(db):
+    cursor = cursor1
+    mydb = mydb1
+    if db == 'inventario':
+        cursor = cursor1
+        mydb = mydb1
+    return cursor, mydb
 
 
 def to_mysql(data):
