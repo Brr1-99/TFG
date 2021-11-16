@@ -1,4 +1,3 @@
-from _datetime import date
 import MySQLdb
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_paginate import Pagination, get_page_parameter
@@ -30,6 +29,7 @@ app.secret_key = "sE+gcUVWsU491sJ"
 
 # Variable global
 mensaje_error = False
+
 
 # Rutas Web
 @app.route('/')
