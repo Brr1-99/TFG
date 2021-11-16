@@ -126,8 +126,8 @@ def index(db):
     login = comprobar_sesion()
     if login:
         global fecha_hoy
-        datos_db, base, pages = db_for_index(db)
-        return render_template('index.html', pagination=pages, mensaje=mensaje_error, fecha=fecha_hoy, datos=datos_db, base=base)
+        datos_db, base, pages, tables_db = db_for_index(db)
+        return render_template('index.html', pagination=pages, mensaje=mensaje_error, fecha=fecha_hoy, datos=datos_db, base=base, tables=tables_db)
     else:
         return render_template('ingresar.html')
 
@@ -138,7 +138,7 @@ def add(db, table):
     login = comprobar_sesion()
     if login:
         mensaje_error = False
-        col = db_for_add(db, table)
+        col = db_for_columns(db, table)
         flash('Conexión con la tabla {0} realizada con éxito.'.format(table))
         return render_template('add.html', mensaje=mensaje_error, columns=col)
     else:
@@ -244,47 +244,34 @@ def delete_contact(db, table, id):
         return render_template('ingresar.html')
 
 
-@app.route('/search', methods=['GET', 'POST'])
+@app.route('/search', methods=['POST'])
 def search():
     global mensaje_error
     login = comprobar_sesion()
     if login:
         if request.method == 'POST':
             mensaje_error = False
-            valor = request.form['input2']
-            opcion = request.form['opciones']
 
-            cursor1.execute(""" SELECT *
-            FROM `vigo`
-            WHERE `{0}`= '{1}'""".format(opcion, valor))
-            mydb1.commit()
-            datos = cursor1.fetchall()
+            table_index = str(request.form['buscar'])[-1]
+            last_url = str(request.referrer)
+            db = last_url.split('/')[-1]
+            datos_db, base, pages, tables_db = db_for_index(db)
 
-            cursor1.execute(""" SELECT SUM(`cantidad`) FROM `vigo` WHERE `{0}` = '{1}'""".format(opcion, valor))
-            datoscuenta = cursor1.fetchall()
+            table = tables_db[int(table_index)]
 
-            page = request.args.get(get_page_parameter(), type=int, default=1)
-            limit = 5
-            offset = page * limit - limit
+            return redirect(url_for('search_data', db=db, table=table))
+    else:
+        return render_template('ingresar.html')
 
-            total = len(datos)
 
-            if total > 0:
-                cursor1.execute("""Select *
-                FROM `vigo`
-                WHERE `{0}`= '{1}'ORDER BY `Fecha Modificación`
-                DESC LIMIT {2} OFFSET {3}""".format(opcion, valor, limit, offset))
-
-                valores = cursor1.fetchall()
-
-                pagination2 = Pagination(page=page, per_page=limit, total=total, record_name='search')
-
-                return render_template('search.html', pagination=pagination2, busqueda=valores, datos=datoscuenta)
-            else:
-                mensaje_error = True
-                return redirect(url_for('index'))
-        else:
-            return redirect(url_for('index'))
+@app.route('/search/<string:db>/<string:table>', methods=["GET", "POST"])
+def search_data(db, table):
+    global mensaje_error
+    login = comprobar_sesion()
+    if login:
+        if request.method == 'POST':
+            mensaje_error = False
+        return redirect(url_for('search_data'))
     else:
         return render_template('ingresar.html')
 
@@ -301,6 +288,7 @@ def comprobar_sesion():
 def db_for_index(db):
     datos = []
     pages = []
+    tables = []
     if db == 'inventario':
 
         page = request.args.get(get_page_parameter(), type=int, default=1)
@@ -327,12 +315,17 @@ def db_for_index(db):
         pagination2 = Pagination(page=page, per_page=limit, total=t2, record_name='index')
         pages.append(pagination)
         pages.append(pagination2)
+
+        cursor1.execute("""SELECT TABLE_NAME from information_schema.tables where table_schema = '{0}'""".format(db))
+        ctable = list(cursor1.fetchall())
+        for table in ctable:
+            tables.append(table[0])
     else:
         base = 2
-    return datos, db, pages
+    return datos, db, pages, tables
 
 
-def db_for_add(db, table):
+def db_for_columns(db, table):
     col = []
     if db == 'inventario':
         cursor1.execute('Show Columns FROM {0}'.format(table))

@@ -14,16 +14,14 @@
 <div class="container" style="padding : 20px">
 <form action="/search" method="POST">
     <div class="row">
-        <div class="col-md-3 col-lg-2 ">
+        <div class="col-md-4 col-lg-3 ">
             <div class="form-group">
-                <select class="form-select" name="opciones">
-                  <option selected value="Nombre producto">Nombre </option>
-                  <option value="Fecha registro">Fecha </option>
+                <select class="form-select" name="buscar">
+                    {% for table in tables %}
+                      <option value="list.{{tables.index(table)}}">{{table}} </option>
+                    {% endfor %}
                 </select>
             </div>
-        </div>
-        <div class="col-md-6 col-lg-3">
-            <input type="text" class="form-control" name="input2" required>
         </div>
         <div class="col-md-6 col-lg-3">
             <button type="submit" class="btn btn-primary">
@@ -91,7 +89,7 @@
                                     {% endfor %}
                                     <td>
                                         <a href="/edit/{{base}}/{{dato.2}}/{{dato.0.0.0}}"> Edit</a>
-                                        <a href="/delete/{{base}}/{{dato.2}}//{{dato.0.0.0}}"> Delete</a>
+                                        <a href="/delete/{{base}}/{{dato.2}}/{{dato.0.0.0}}"> Delete</a>
                                     </td>
                                 </tr>
                         {% endfor %}
