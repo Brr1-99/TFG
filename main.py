@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from flask_paginate import Pagination, get_page_parameter
 import bcrypt
 
-# Conexión a bases de datos
+# Conexión a todas las bases de datos
 mydb1 = MySQLdb.connect(host='localhost',
                         user='root',
                         password='',
