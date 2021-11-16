@@ -194,7 +194,7 @@ def edit_contact(db, table, id):
         return render_template('ingresar.html')
 
 
-@app.route('/update', methods=['POST'])
+@app.route('/update', methods=['GET', 'POST'])
 def update_contact():
     global mensaje_error
     login = comprobar_sesion()
@@ -227,6 +227,9 @@ def update_contact():
             datab.commit()
             flash('Pieza actualizada correctamente')
             return redirect(url_for('index', db=db))
+        else:
+            flash('Selecciona un ítem a editar para acceder a la página que buscas')
+            return redirect(url_for('inicio'))
     else:
         return render_template('ingresar.html')
 
@@ -244,7 +247,7 @@ def delete_contact(db, table, id):
         return render_template('ingresar.html')
 
 
-@app.route('/search', methods=['POST'])
+@app.route('/search', methods=['GET', 'POST'])
 def search():
     global mensaje_error
     login = comprobar_sesion()
@@ -260,6 +263,9 @@ def search():
             table = tables_db[int(table_index)]
 
             return redirect(url_for('search_data', db=db, table=table))
+        else:
+            flash('Seleccione una tabla para poder iniciar la búsqueda')
+            return redirect(url_for('inicio'))
     else:
         return render_template('ingresar.html')
 
@@ -269,9 +275,52 @@ def search_data(db, table):
     global mensaje_error
     login = comprobar_sesion()
     if login:
-        if request.method == 'POST':
+        if request.method == 'GET':
             mensaje_error = False
-        return redirect(url_for('search_data'))
+            current_url = str(request.url)
+            cur, datab = db_cursor(db)
+            col = db_for_columns(db, table)
+            page = request.args.get(get_page_parameter(), type=int, default=1)
+            limit = 5
+            offset = page * limit - limit
+
+            cur.execute('SELECT * FROM {0} ORDER BY `Fecha Modificación` DESC LIMIT {1} OFFSET {2}'.format(table, limit, offset))
+            datab.commit()
+            data = cur.fetchall()
+            length = len(data)
+
+            pagination = Pagination(page=page, per_page=limit, total=length, record_name='search')
+
+            return render_template('search.html', pagination=pagination, busqueda=data, url=current_url, columns=col, db=db, table=table, mensaje=mensaje_error)
+        else:
+            mensaje_error = True
+            current_url = str(request.url)
+            criterio = request.form['criterio']
+            nombre = request.form['nombre']
+            print(criterio)
+            print(nombre)
+            cur, datab = db_cursor(db)
+            col = db_for_columns(db, table)
+
+            page = request.args.get(get_page_parameter(), type=int, default=1)
+            limit = 5
+            offset = page * limit - limit
+
+            cur.execute('SELECT * FROM {0}'.format(table))
+            data = cur.fetchall()
+            length = len(data)
+
+            if length > 0:
+
+                cur.execute("""SELECT * FROM {0} WHERE `{1}` = '{2}' ORDER BY `Fecha Modificación` DESC LIMIT {3} OFFSET {4}""".format(table, criterio, nombre, limit, offset))
+                datab.commit()
+                data = cur.fetchall()
+
+                pagination = Pagination(page=page, per_page=limit, total=length, record_name='search')
+
+                return render_template('search.html', pagination=pagination, busqueda=data, url=current_url, columns=col, db=db, table=table, mensaje=mensaje_error)
+            else:
+                return redirect(url_for('search_data', db=db, table=table, mensaje=mensaje_error))
     else:
         return render_template('ingresar.html')
 
