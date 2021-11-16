@@ -28,10 +28,8 @@ semilla = bcrypt.gensalt()
 # Ajustes
 app.secret_key = "sE+gcUVWsU491sJ"
 
-# Variables globales
+# Variable global
 mensaje_error = False
-fecha_hoy = date.today()
-
 
 # Rutas Web
 @app.route('/')
@@ -125,9 +123,8 @@ def salir():
 def index(db):
     login = comprobar_sesion()
     if login:
-        global fecha_hoy
         datos_db, base, pages, tables_db = db_for_index(db)
-        return render_template('index.html', pagination=pages, mensaje=mensaje_error, fecha=fecha_hoy, datos=datos_db, base=base, tables=tables_db)
+        return render_template('index.html', pagination=pages, mensaje=mensaje_error, datos=datos_db, base=base, tables=tables_db)
     else:
         return render_template('ingresar.html')
 
