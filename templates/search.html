@@ -19,7 +19,7 @@
         <div class="col-md-4 col-lg-3">
             <div class="form-group">
                 <select class="form-select" name="criterio">
-                    {% for col in columns %}
+                    {% for col in columns[:-1] %}
                       <option value="{{col.0}}">{{col.0}} </option>
                     {% endfor %}
                 </select>
