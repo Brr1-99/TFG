@@ -1,6 +1,7 @@
 import MySQLdb
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_paginate import Pagination, get_page_parameter
+from inicio.intro import iniciar
 import bcrypt
 
 # Conexión a todas las bases de datos
@@ -18,8 +19,9 @@ mydb2 = MySQLdb.connect(host='localhost',
 
 cursor2 = mydb2.cursor()
 
-# Creación API
+# Creación API y conexión Blueprints
 app = Flask(__name__)
+app.register_blueprint(iniciar, url_prefix="/inicio")
 
 # Ajustes
 app.secret_key = "sE+gcUVWsU491sJ"
@@ -35,15 +37,6 @@ mensaje_error = False
 @app.route('/')
 def main():
     return render_template('portada.html')
-
-
-@app.route('/inicio')
-def inicio():
-    login = comprobar_sesion()
-    if login:
-        return render_template('inicio.html')
-    else:
-        return render_template('ingresar.html')
 
 
 @app.route("/registrar", methods=["GET", "POST"])
@@ -142,7 +135,7 @@ def add(db, table):
         return render_template('ingresar.html')
 
 
-@app.route('/add', methods=['POST'])
+@app.route('/add', methods=['GET','POST'])
 def add_table():
     global mensaje_error
     login = comprobar_sesion()
@@ -172,6 +165,9 @@ def add_table():
             flash('Pieza añadida a la tabla "{0}" correctamente'.format(table))
 
             return redirect(url_for('index', db=db))
+        else:
+            flash('Selecciona el botón de añadir en una tabla para acceder a la página que buscas.')
+            return redirect(url_for('bp_inicio.inicio'))
     else:
         return render_template('ingresar.html')
 
@@ -222,11 +218,11 @@ def update_contact():
                 WHERE id = {2} """.format(table, text, id), datas)
 
             datab.commit()
-            flash('Pieza actualizada correctamente')
+            flash('Pieza actualizada correctamente.')
             return redirect(url_for('index', db=db))
         else:
-            flash('Selecciona un ítem a editar para acceder a la página que buscas')
-            return redirect(url_for('inicio'))
+            flash('Selecciona un ítem a editar para acceder a la página que buscas.')
+            return redirect(url_for('bp_inicio.inicio'))
     else:
         return render_template('ingresar.html')
 
@@ -262,7 +258,7 @@ def search():
             return redirect(url_for('search_data', db=db, table=table))
         else:
             flash('Seleccione una tabla para poder iniciar la búsqueda')
-            return redirect(url_for('inicio'))
+            return redirect(url_for('bp_inicio.inicio'))
     else:
         return render_template('ingresar.html')
 
