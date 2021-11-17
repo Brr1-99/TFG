@@ -135,7 +135,7 @@ def add(db, table):
         return render_template('ingresar.html')
 
 
-@app.route('/add', methods=['GET','POST'])
+@app.route('/add', methods=['GET', 'POST'])
 def add_table():
     global mensaje_error
     login = comprobar_sesion()
@@ -196,7 +196,7 @@ def update_contact():
             mensaje_error = False
 
             last_url = str(request.referrer)
-            id = last_url.split('/')[-1]
+            indice = last_url.split('/')[-1]
             table = last_url.split('/')[-2]
             db = last_url.split('/')[-3]
 
@@ -215,7 +215,7 @@ def update_contact():
             cur.execute("""
                 UPDATE `{0}`
                 SET {1}
-                WHERE id = {2} """.format(table, text, id), datas)
+                WHERE id = {2} """.format(table, text, indice), datas)
 
             datab.commit()
             flash('Pieza actualizada correctamente.')
