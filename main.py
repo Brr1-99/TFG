@@ -2,26 +2,19 @@ import MySQLdb
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_paginate import Pagination, get_page_parameter
 from inicio.intro import iniciar
+from adjuntar.add import adjuntar
 import bcrypt
+from config.mydb1 import db1, db2
 
 # Conexión a todas las bases de datos
-mydb1 = MySQLdb.connect(host='localhost',
-                        user='root',
-                        password='',
-                        db='inventario')
+mydb1, cursor1 = db1()
 
-cursor1 = mydb1.cursor()
-
-mydb2 = MySQLdb.connect(host='localhost',
-                        user='root',
-                        password='',
-                        db='manten_correctivo')
-
-cursor2 = mydb2.cursor()
+mydb2, cursor2 = db2()
 
 # Creación API y conexión Blueprints
 app = Flask(__name__)
 app.register_blueprint(iniciar, url_prefix="/inicio")
+app.register_blueprint(adjuntar, url_prefix="/add")
 
 # Ajustes
 app.secret_key = "sE+gcUVWsU491sJ"
@@ -118,56 +111,6 @@ def index(db):
     if login:
         datos_db, base, pages, tables_db = db_for_index(db)
         return render_template('index.html', pagination=pages, mensaje=mensaje_error, datos=datos_db, base=base, tables=tables_db)
-    else:
-        return render_template('ingresar.html')
-
-
-@app.route('/add/<string:db>/<string:table>')
-def add(db, table):
-    global mensaje_error
-    login = comprobar_sesion()
-    if login:
-        mensaje_error = False
-        col = db_for_columns(db, table)
-        flash('Conexión con la tabla {0} realizada con éxito.'.format(table))
-        return render_template('add.html', mensaje=mensaje_error, columns=col)
-    else:
-        return render_template('ingresar.html')
-
-
-@app.route('/add', methods=['GET', 'POST'])
-def add_table():
-    global mensaje_error
-    login = comprobar_sesion()
-    if login:
-        if request.method == 'POST':
-            mensaje_error = False
-
-            last_url = str(request.referrer)
-            table = last_url.split('/')[-1]
-            db = last_url.split('/')[-2]
-
-            cur, datab = db_cursor(db)
-            col_name = []
-            cur.execute('Show Columns FROM {0}'.format(table))
-            columns = cur.fetchall()
-            for column in columns[1:-1]:
-                col_name.append(column[0])
-
-            datas = []
-            for i in range(len(col_name)):
-                datas.append(request.form['col.{0}'.format(i+1)])
-
-            names = to_mysql(col_name)
-
-            cur.execute('INSERT INTO `{0}` {1} VALUES {2}'.format(table, names, tuple(datas)))
-            datab.commit()
-            flash('Pieza añadida a la tabla "{0}" correctamente'.format(table))
-
-            return redirect(url_for('index', db=db))
-        else:
-            flash('Selecciona el botón de añadir en una tabla para acceder a la página que buscas.')
-            return redirect(url_for('bp_inicio.inicio'))
     else:
         return render_template('ingresar.html')
 
@@ -396,34 +339,6 @@ def db_for_index(db):
             tables.append(table[0])
 
     return datos, db, pages, tables
-
-
-def db_for_columns(db, table):
-    col = []
-    if db == 'inventario':
-        cursor1.execute('Show Columns FROM {0}'.format(table))
-        col = cursor1.fetchall()
-    elif db == 'manten_correctivo':
-        cursor2.execute('Show Columns FROM {0}'.format(table))
-        col = cursor2.fetchall()
-    return col
-
-
-def db_cursor(db):
-    cursor = cursor1
-    mydb = mydb1
-    if db == 'inventario':
-        cursor = cursor1
-        mydb = mydb1
-    elif db == 'manten_correctivo':
-        cursor = cursor2
-        mydb = mydb2
-    return cursor, mydb
-
-
-def to_mysql(data):
-    mysql_data = str(tuple(data)).replace("'", "`")
-    return mysql_data
 
 
 def extractCols(arr_cols):
