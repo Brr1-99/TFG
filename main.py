@@ -21,11 +21,11 @@ cursor2 = mydb2.cursor()
 # Creación API
 app = Flask(__name__)
 
-# Encriptamiento
-semilla = bcrypt.gensalt()
-
 # Ajustes
 app.secret_key = "sE+gcUVWsU491sJ"
+
+# Encriptamiento
+semilla = bcrypt.gensalt()
 
 # Variable global
 mensaje_error = False
