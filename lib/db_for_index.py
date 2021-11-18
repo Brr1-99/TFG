@@ -2,15 +2,14 @@ from flask import request
 from flask_paginate import Pagination, get_page_parameter
 from config.mydb1 import db1, db2
 
-cursor1 = db1()[1]
-cursor2 = db2()[1]
-
 
 def db_for_index(db):
     datos = []
     pages = []
     tables = []
     if db == 'inventario':
+
+        cursor1 = db1()[1]
 
         page = request.args.get(get_page_parameter(), type=int, default=1)
         limit = 5
@@ -41,8 +40,10 @@ def db_for_index(db):
         ctable = list(cursor1.fetchall())
         for table in ctable:
             tables.append(table[0])
-
+        cursor1.close()
     elif db == 'manten_correctivo':
+
+        cursor2 = db2()[1]
 
         page = request.args.get(get_page_parameter(), type=int, default=1)
         limit = 5
@@ -69,9 +70,10 @@ def db_for_index(db):
         pages.append(pagination)
         pages.append(pagination2)
 
-        cursor1.execute("""SELECT TABLE_NAME from information_schema.tables where table_schema = '{0}'""".format(db))
-        ctable = list(cursor1.fetchall())
+        cursor2.execute("""SELECT TABLE_NAME from information_schema.tables where table_schema = '{0}'""".format(db))
+        ctable = list(cursor2.fetchall())
         for table in ctable:
             tables.append(table[0])
 
+        cursor2.close()
     return datos, db, pages, tables

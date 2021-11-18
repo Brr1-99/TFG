@@ -7,8 +7,10 @@ from administrar.admin import admin
 from editar.editar import edit
 from config.mydb1 import db1, db2
 from lib.db_for_index import db_for_index
+from lib.db_cursor import db_cursor
 
 # Conexión a todas las bases de datos
+
 mydb1, cursor1 = db1()
 
 mydb2, cursor2 = db2()
@@ -55,7 +57,7 @@ def index(db):
 def delete_contact(db, table, id):
     login = comprobar_sesion()
     if login:
-        cur, datab = db_cursor(db)
+        datab,cur = db_cursor(db)
         cur.execute('DELETE FROM `{0}` WHERE id = {1}'.format(table, id))
         datab.commit()
         flash('Item de la tabla "{0}" eliminado correctamente'.format(table))
