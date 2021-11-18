@@ -54,7 +54,6 @@ def update_contact():
                 WHERE id = {2} """.format(table, text, indice), datas)
 
             datab.commit()
-            print('AAA')
             flash('Pieza actualizada correctamente.')
             return redirect(url_for('index', db=db))
         else:

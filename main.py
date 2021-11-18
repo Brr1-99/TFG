@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash, session
+from flask import Flask, render_template, session
 
 from inicio.intro import iniciar
 from adjuntar.add import adjuntar
@@ -7,7 +7,7 @@ from administrar.admin import admin
 from editar.editar import edit
 from config.mydb1 import db1, db2
 from lib.db_for_index import db_for_index
-from lib.db_cursor import db_cursor
+from eliminar.eliminar import delete
 
 # Conexión a todas las bases de datos
 
@@ -22,6 +22,7 @@ app.register_blueprint(adjuntar, url_prefix="/add")
 app.register_blueprint(buscar, url_prefix="/search")
 app.register_blueprint(admin, url_prefix="/admin")
 app.register_blueprint(edit, url_prefix="/edit")
+app.register_blueprint(delete, url_prefix="/delete")
 
 # Ajustes
 app.secret_key = "sE+gcUVWsU491sJ"
@@ -49,19 +50,6 @@ def index(db):
     if login:
         datos_db, base, pages, tables_db = db_for_index(db)
         return render_template('index.html', pagination=pages, mensaje=mensaje_error, datos=datos_db, base=base, tables=tables_db)
-    else:
-        return render_template('ingresar.html')
-
-
-@app.route('/delete/<string:db>/<string:table>/<string:id>')
-def delete_contact(db, table, id):
-    login = comprobar_sesion()
-    if login:
-        datab,cur = db_cursor(db)
-        cur.execute('DELETE FROM `{0}` WHERE id = {1}'.format(table, id))
-        datab.commit()
-        flash('Item de la tabla "{0}" eliminado correctamente'.format(table))
-        return redirect(url_for('index', db=db))
     else:
         return render_template('ingresar.html')
 
