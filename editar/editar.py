@@ -3,7 +3,7 @@ from lib.comprobar_sesión import comprobar_sesion
 from lib.extractCols import extractCols
 from lib.db_cursor import db_cursor
 
-edit = Blueprint('bp_editar', __name__, static_folder="static", template_folder="templates")
+edit = Blueprint('bp_editar', __name__, static_folder="static", template_folder="templates_edit")
 
 mensaje_error = False
 
@@ -55,7 +55,7 @@ def update_contact():
 
             datab.commit()
             flash('Pieza actualizada correctamente.')
-            return redirect(url_for('index', db=db))
+            return redirect(url_for('bp_index.index', db=db))
         else:
             flash('Selecciona un ítem a editar para acceder a la página que buscas.')
             return redirect(url_for('bp_inicio.inicio'))

@@ -6,8 +6,8 @@ from buscar.buscar import buscar
 from administrar.admin import admin
 from editar.editar import edit
 from config.mydb1 import db1, db2
-from lib.db_for_index import db_for_index
 from eliminar.eliminar import delete
+from mostrar.mostrar import indx
 
 # Conexión a todas las bases de datos
 
@@ -23,13 +23,10 @@ app.register_blueprint(buscar, url_prefix="/search")
 app.register_blueprint(admin, url_prefix="/admin")
 app.register_blueprint(edit, url_prefix="/edit")
 app.register_blueprint(delete, url_prefix="/delete")
+app.register_blueprint(indx, url_prefix="/index")
 
 # Ajustes
 app.secret_key = "sE+gcUVWsU491sJ"
-
-
-# Variable global
-mensaje_error = False
 
 
 # Rutas Web
@@ -42,25 +39,6 @@ def main():
 def salir():
     session.clear()
     return render_template('portada.html')
-
-
-@app.route('/index/<string:db>')
-def index(db):
-    login = comprobar_sesion()
-    if login:
-        datos_db, base, pages, tables_db = db_for_index(db)
-        return render_template('index.html', pagination=pages, mensaje=mensaje_error, datos=datos_db, base=base, tables=tables_db)
-    else:
-        return render_template('ingresar.html')
-
-
-# Funciones Recurrentes
-def comprobar_sesion():
-    validez = False
-    nombre = session.get('Nombre registro')
-    if nombre:
-        validez = True
-    return validez
 
 
 if __name__ == '__main__':

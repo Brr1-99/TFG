@@ -4,7 +4,7 @@ from lib.to_mysql import to_mysql
 from lib.db_for_columns import db_for_columns
 from lib.db_cursor import db_cursor
 
-adjuntar = Blueprint('bp_añadir', __name__, static_folder="static", template_folder="templates")
+adjuntar = Blueprint('bp_añadir', __name__, static_folder="static", template_folder="templates_add")
 
 mensaje_error = False
 
@@ -51,7 +51,7 @@ def add_table():
             datab.commit()
             flash('Pieza añadida a la tabla "{0}" correctamente'.format(table))
 
-            return redirect(url_for('index', db=db))
+            return redirect(url_for('bp_index.index', db=db))
         else:
             flash('Selecciona el botón de añadir en una tabla para acceder a la página que buscas.')
             return redirect(url_for('bp_inicio.inicio'))

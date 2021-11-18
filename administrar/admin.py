@@ -3,7 +3,7 @@ from lib.comprobar_sesión import comprobar_sesion
 from config.mydb1 import db1, db2
 import bcrypt
 
-admin = Blueprint('bp_admin', __name__, static_folder="static", template_folder="templates")
+admin = Blueprint('bp_admin', __name__, static_folder="static", template_folder="templates_admin")
 
 mydb1, cursor1 = db1()
 mydb2, cursor2 = db2()

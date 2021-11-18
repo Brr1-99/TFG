@@ -13,6 +13,6 @@ def delete_contact(db, table, id):
         cur.execute('DELETE FROM `{0}` WHERE id = {1}'.format(table, id))
         datab.commit()
         flash('Item de la tabla "{0}" eliminado correctamente'.format(table))
-        return redirect(url_for('index', db=db))
+        return redirect(url_for('bp_index.index', db=db))
     else:
         return render_template('ingresar.html')

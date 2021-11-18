@@ -5,7 +5,7 @@ from lib.db_cursor import db_cursor
 from lib.db_for_columns import db_for_columns
 from lib.db_for_index import db_for_index
 
-buscar = Blueprint('bp_busqueda', __name__, static_folder="static", template_folder="templates")
+buscar = Blueprint('bp_busqueda', __name__, static_folder="static", template_folder="templates_search")
 
 mensaje_error = False
 
