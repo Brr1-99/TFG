@@ -26,35 +26,38 @@
 {% with messages = get_flashed_messages() %}
 {% if messages %}
 {% for message in messages %}
-     <div class="alert alert-info alert-dismissible fade show" role="alert">
+      <div class="alert alert-info alert-dismissible fade show" role="alert">
         <p> {{message}}</p>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 {% endfor%}
 {% endif %}
 {% endwith %}
-
     <div class="login-wrapper" style="padding: 20px">
-        <div class="p-relative mx-auto overflow-hidden bg-white" style="width: 350px; height: 500px; ">
-            <div class="login">
-                <form class="formulario" action="/ingresar" method="POST">
-                    <div class="input-group">
+        <div class="p-relative mx-auto overflow-hidden bg-white" style="width: 350px; height: 500px;">
+            <div class="signup">
+                    <form class="formulario" action="/registrar" method="POST">
+                        <div class="input-group">
                             <span>Dirección de correo</span>
-                            <input type="email" name="Correo login" required placeholder="correo" class="inp"/>
+                            <input type="email" name="Correo registro" required placeholder="correo" class="inp"/>
                         </div>
                         <div class="input-group">
                             <span>Contraseña</span>
-                            <input type="password" name="Password login" required placeholder="password" class="inp"/>
+                            <input type="password" name="Password registro" required placeholder="password" class="inp"/>
                         </div>
-                    <div class="input-group">
+                        <div class="input-group">
+                            <span>Nombre de usuario</span>
+                            <input type="text" name="Nombre registro" required placeholder="nombre" class="inp"/>
+                        </div>
+                        <div class="input-group" style="margin-top: 20px;">
                             <button type="submit" class="inp submit-inp">
-                                Iniciar sesión
+                                Registrarse
                             </button>
                         </div>
-                    <p style="color: black;text-align: center;margin-top: 30px">No tiene cuenta?
-                        <a class="nav-link" style="color: green;text-align: center" href="/registrar">Regístrese.</a>
+                        <p style="color: black;text-align: center;margin-top: 30px">Ya tienes cuenta?
+                        <a class="nav-link" style="color: green;text-align: center" href="/admin/ingresar">Iniciar sesión.</a>
                     </p>
-                </form>
+                    </form>
             </div>
         </div>
     </div>

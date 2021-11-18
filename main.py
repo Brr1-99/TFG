@@ -1,10 +1,10 @@
-import MySQLdb
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-from flask_paginate import Pagination, get_page_parameter
 from inicio.intro import iniciar
 from adjuntar.add import adjuntar
-import bcrypt
+from buscar.buscar import buscar
+from administrar.admin import admin
 from config.mydb1 import db1, db2
+from lib.db_for_index import db_for_index
 
 # Conexión a todas las bases de datos
 mydb1, cursor1 = db1()
@@ -15,12 +15,12 @@ mydb2, cursor2 = db2()
 app = Flask(__name__)
 app.register_blueprint(iniciar, url_prefix="/inicio")
 app.register_blueprint(adjuntar, url_prefix="/add")
+app.register_blueprint(buscar, url_prefix="/search")
+app.register_blueprint(admin)
 
 # Ajustes
 app.secret_key = "sE+gcUVWsU491sJ"
 
-# Encriptamiento
-semilla = bcrypt.gensalt()
 
 # Variable global
 mensaje_error = False
@@ -30,73 +30,6 @@ mensaje_error = False
 @app.route('/')
 def main():
     return render_template('portada.html')
-
-
-@app.route("/registrar", methods=["GET", "POST"])
-def registrar():
-    if request.method == "GET":
-        login = comprobar_sesion()
-        if login:
-            return render_template('index.html')
-        else:
-            return render_template('registrar.html')
-    else:
-        nombre = request.form['Nombre registro']
-        correo = request.form['Correo registro']
-        password = request.form['Password registro']
-        password_encode = password.encode("utf-8")
-        encriptado = bcrypt.hashpw(password_encode, semilla)
-
-        cursor2.execute("""INSERT INTO `Usuarios`(`Nombre`,`Correo registro`, `Contraseña`)
-                        VALUES ( %s, %s, %s )""", (nombre, correo, encriptado))
-        mydb2.commit()
-
-        session['Nombre registro'] = nombre
-        session['Correo registro'] = correo
-
-        flash("Se ha registrado correctamente. Por favor inicie sesión")
-
-        return render_template('ingresar.html')
-
-
-@app.route("/ingresar", methods=["GET", "POST"])
-def ingresar():
-    if request.method == "GET":
-        login = comprobar_sesion()
-        if login:
-            return redirect(url_for('index'))
-        else:
-            return render_template('ingresar.html')
-    else:
-        correo = request.form['Correo login']
-        password = request.form['Password login']
-        password_encode = password.encode('utf-8')
-
-        cursor2.execute("""SELECT  `Correo registro` , `Contraseña`, `Nombre`
-        FROM `Usuarios`
-        WHERE `Correo registro` = %s """, [correo])
-
-        mydb2.commit()
-
-        usuario = cursor2.fetchone()
-
-        if usuario:
-            encriptado = usuario[1]
-            if encriptado == bcrypt.hashpw(password_encode, encriptado.encode('utf-8')).decode('utf-8'):
-                session['Nombre registro'] = usuario[2]
-                session['Correo registro'] = correo
-
-                return redirect(request.referrer)
-
-            else:
-                flash("La contraseña es incorrecta")
-
-                return render_template('ingresar.html')
-
-        else:
-            flash("El correo no existe, por favor regístrese")
-
-            return render_template('registrar.html')
 
 
 @app.route('/salir')
@@ -130,7 +63,7 @@ def edit_contact(db, table, id):
         return render_template('ingresar.html')
 
 
-@app.route('/update', methods=['GET', 'POST'])
+@app.route('/edit', methods=['GET', 'POST'])
 def update_contact():
     global mensaje_error
     login = comprobar_sesion()
@@ -183,84 +116,6 @@ def delete_contact(db, table, id):
         return render_template('ingresar.html')
 
 
-@app.route('/search', methods=['GET', 'POST'])
-def search():
-    global mensaje_error
-    login = comprobar_sesion()
-    if login:
-        if request.method == 'POST':
-            mensaje_error = False
-
-            table_index = str(request.form['buscar'])[-1]
-            last_url = str(request.referrer)
-            db = last_url.split('/')[-1]
-            datos_db, base, pages, tables_db = db_for_index(db)
-
-            table = tables_db[int(table_index)]
-
-            return redirect(url_for('search_data', db=db, table=table))
-        else:
-            flash('Seleccione una tabla para poder iniciar la búsqueda')
-            return redirect(url_for('bp_inicio.inicio'))
-    else:
-        return render_template('ingresar.html')
-
-
-@app.route('/search/<string:db>/<string:table>', methods=["GET", "POST"])
-def search_data(db, table):
-    global mensaje_error
-    login = comprobar_sesion()
-    if login:
-        if request.method == 'GET':
-            mensaje_error = False
-            current_url = str(request.url)
-            cur, datab = db_cursor(db)
-            col = db_for_columns(db, table)
-            page = request.args.get(get_page_parameter(), type=int, default=1)
-            limit = 5
-            offset = page * limit - limit
-
-            cur.execute('SELECT * FROM {0} ORDER BY `Fecha Modificación` DESC LIMIT {1} OFFSET {2}'.format(table, limit, offset))
-            datab.commit()
-            data = cur.fetchall()
-            length = len(data)
-
-            pagination = Pagination(page=page, per_page=limit, total=length, record_name='search')
-
-            return render_template('search.html', pagination=pagination, busqueda=data, url=current_url, columns=col, db=db, table=table, mensaje=mensaje_error)
-        else:
-            mensaje_error = True
-            current_url = str(request.url)
-            criterio = request.form['criterio']
-            nombre = request.form['nombre']
-            print(criterio)
-            print(nombre)
-            cur, datab = db_cursor(db)
-            col = db_for_columns(db, table)
-
-            page = request.args.get(get_page_parameter(), type=int, default=1)
-            limit = 5
-            offset = page * limit - limit
-
-            cur.execute('SELECT * FROM {0}'.format(table))
-            data = cur.fetchall()
-            length = len(data)
-
-            if length > 0:
-
-                cur.execute("""SELECT * FROM {0} WHERE `{1}` = '{2}' ORDER BY `Fecha Modificación` DESC LIMIT {3} OFFSET {4}""".format(table, criterio, nombre, limit, offset))
-                datab.commit()
-                data = cur.fetchall()
-
-                pagination = Pagination(page=page, per_page=limit, total=length, record_name='search')
-
-                return render_template('search.html', pagination=pagination, busqueda=data, url=current_url, columns=col, db=db, table=table, mensaje=mensaje_error)
-            else:
-                return redirect(url_for('search_data', db=db, table=table, mensaje=mensaje_error))
-    else:
-        return render_template('ingresar.html')
-
-
 # Funciones Recurrentes
 def comprobar_sesion():
     validez = False
@@ -268,77 +123,6 @@ def comprobar_sesion():
     if nombre:
         validez = True
     return validez
-
-
-def db_for_index(db):
-    datos = []
-    pages = []
-    tables = []
-    if db == 'inventario':
-
-        page = request.args.get(get_page_parameter(), type=int, default=1)
-        limit = 5
-        offset = page * limit - limit
-
-        cursor1.execute('Select * FROM componente ORDER BY `Fecha Modificación` DESC LIMIT %s OFFSET %s', (limit, offset))
-        d1 = cursor1.fetchall()
-        t1 = len(d1)
-
-        cursor1.execute('Show Columns FROM componente')
-        c1 = cursor1.fetchall()
-        datos.append([d1, c1, 'componente'])
-
-        cursor1.execute('Select * FROM maquina_herramienta ORDER BY `Fecha Modificación` DESC LIMIT %s OFFSET %s', (limit, offset))
-        d2 = cursor1.fetchall()
-        t2 = len(d2)
-
-        cursor1.execute('Show Columns FROM maquina_herramienta')
-        c2 = cursor1.fetchall()
-        datos.append([d2, c2, 'maquina_herramienta'])
-
-        pagination = Pagination(page=page, per_page=limit, total=t1, record_name='index')
-        pagination2 = Pagination(page=page, per_page=limit, total=t2, record_name='index')
-        pages.append(pagination)
-        pages.append(pagination2)
-
-        cursor1.execute("""SELECT TABLE_NAME from information_schema.tables where table_schema = '{0}'""".format(db))
-        ctable = list(cursor1.fetchall())
-        for table in ctable:
-            tables.append(table[0])
-
-    elif db == 'manten_correctivo':
-
-        page = request.args.get(get_page_parameter(), type=int, default=1)
-        limit = 5
-        offset = page * limit - limit
-
-        cursor2.execute('Select * FROM incidencias ORDER BY `id` DESC LIMIT %s OFFSET %s', (limit, offset))
-        d1 = cursor2.fetchall()
-        t1 = len(d1)
-
-        cursor2.execute('Show Columns FROM incidencias')
-        c1 = cursor2.fetchall()
-        datos.append([d1, c1, 'incidencias'])
-
-        cursor2.execute('Select * FROM protocolos ORDER BY `id` DESC LIMIT %s OFFSET %s', (limit, offset))
-        d2 = cursor2.fetchall()
-        t2 = len(d2)
-
-        cursor2.execute('Show Columns FROM protocolos')
-        c2 = cursor2.fetchall()
-        datos.append([d2, c2, 'protocolos'])
-
-        pagination = Pagination(page=page, per_page=limit, total=t1, record_name='index')
-        pagination2 = Pagination(page=page, per_page=limit, total=t2, record_name='index')
-        pages.append(pagination)
-        pages.append(pagination2)
-
-        cursor1.execute("""SELECT TABLE_NAME from information_schema.tables where table_schema = '{0}'""".format(db))
-        ctable = list(cursor1.fetchall())
-        for table in ctable:
-            tables.append(table[0])
-
-    return datos, db, pages, tables
 
 
 def extractCols(arr_cols):
