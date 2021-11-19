@@ -24,11 +24,27 @@ def register():
         nombre = request.form['Nombre registro']
         correo = request.form['Correo registro']
         password = request.form['Password registro']
+
+        if request.form['Administrador'] == "on":
+            rol = 'Administrador'
+        else:
+            rol = 'Jefe de planta'
+
         password_encode = password.encode("utf-8")
         encriptado = bcrypt.hashpw(password_encode, semilla)
 
+        cursor2.execute('SELECT id from `roles` WHERE `Nombre rol` = "{0}"'.format(rol))
+        id_rol = cursor2.fetchone()
+
         cursor2.execute("""INSERT INTO `Usuarios`(`Nombre`,`Correo registro`, `Contraseña`)
                         VALUES ( %s, %s, %s )""", (nombre, correo, encriptado))
+        mydb2.commit()
+
+        cursor2.execute('SELECT id FROM `usuarios` WHERE `Nombre` = "{0}"'.format(nombre))
+        id_user = cursor2.fetchone()
+
+        cursor2.execute("""INSERT INTO `rol-usuarios`(`id_rol`,`id_usuarios`)
+                                VALUES ( %s, %s )""", (id_rol, id_user))
         mydb2.commit()
 
         session['Nombre registro'] = nombre
@@ -65,7 +81,7 @@ def ingresar():
             if encriptado == bcrypt.hashpw(password_encode, encriptado.encode('utf-8')).decode('utf-8'):
                 session['Nombre registro'] = usuario[2]
                 session['Correo registro'] = correo
-
+                flash(f"Bienvenido usuario: {usuario[2]}")
                 return redirect(url_for('bp_inicio.inicio'))
 
             else:

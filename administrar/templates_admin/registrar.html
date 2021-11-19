@@ -11,7 +11,7 @@
             outline: none;
         }
         login-wrapper{
-            height: 100vh;
+            height: 120vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -34,7 +34,7 @@
 {% endif %}
 {% endwith %}
     <div class="login-wrapper" style="padding: 20px">
-        <div class="p-relative mx-auto overflow-hidden bg-white" style="width: 350px; height: 500px;">
+        <div class="p-relative mx-auto overflow-hidden bg-white" style="width: 350px; height: 600px;">
             <div class="signup">
                     <form class="formulario" action="/admin/registrar" method="POST">
                         <div class="input-group">
@@ -49,6 +49,24 @@
                             <span>Nombre de usuario</span>
                             <input type="text" name="Nombre registro" required placeholder="nombre" class="inp"/>
                         </div>
+                         <div class="row" style="margin-top: 20px">
+                            <div class="col-xs-4 col-lg-6 ">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="radio" name="Administrador" id="option1">
+                                  <label class="form-check-label" for="option1">
+                                    Administrador
+                                  </label>
+                                </div>
+                            </div>
+                             <div class="col-xs-4 col-lg-6 ">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="radio" name="Jefe de planta" id="option2">
+                                  <label class="form-check-label" for="option2">
+                                    Jefe de planta
+                                  </label>
+                                </div>
+                            </div>
+                         </div>
                         <div class="input-group" style="margin-top: 20px;">
                             <button type="submit" class="inp submit-inp">
                                 Registrarse
@@ -56,7 +74,7 @@
                         </div>
                         <p style="color: black;text-align: center;margin-top: 30px">Ya tienes cuenta?
                         <a class="nav-link" style="color: green;text-align: center" href="/admin/ingresar">Iniciar sesión.</a>
-                    </p>
+                        </p>
                     </form>
             </div>
         </div>
