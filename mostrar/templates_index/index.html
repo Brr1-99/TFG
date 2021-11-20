@@ -36,42 +36,41 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 {% endif %}
-{% if base == 'inventario' %}
-    {% for dato in datos %}
-        <div class="container" style="padding : 20px">
-            <div class="border rounded bg-light">
-                {{ pagination[datos.index(dato)].info }}
-                <table class="table table-light table-striped table-hover">
-                    <thead>
-                        <tr class="table-primary">
-                            {% for valor in dato.1[:-1] %}
-                                <td>{{valor.0|capitalize}}</td>
-                            {% endfor %}
-                                <td>Operaciones</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for i in range (0, dato.0|length)%}
-                                <tr>
-                                    {% for j in range(0, (dato.0[i]|length-1)) %}
-                                        <td>{{dato.0[i][j]}}</td>
-                                    {% endfor %}
-                                    <td>
-                                        <a href="/edit/{{base}}/{{dato.2}}/{{dato.0.0.0}}"> Edit</a>
-                                        <a href="/delete/{{base}}/{{dato.2}}/{{dato.0.0.0}}"> Delete</a>
-                                    </td>
-                                </tr>
+{% for dato in datos %}
+    <div class="container" style="padding : 20px">
+        <div class="border rounded bg-light">
+            <h6> {{tables[datos.index(dato)]|capitalize}}</h6>
+<!--            {{ pagination[datos.index(dato)].info }} -->
+            <table class="table table-light table-striped table-hover">
+                <thead>
+                    <tr class="table-primary">
+                        {% for valor in dato.1[:-1] %}
+                            <td>{{valor.0|capitalize}}</td>
                         {% endfor %}
-                    </tbody>
-                </table>
-                {{ pagination[datos.index(dato)].links }}
-            </div>
-            <div class="d-flex align-items-center"  style="margin-top:20px">
-                <a class="btn btn-info" href="/add/{{base}}/{{dato.2}}" role="button">Añadir instancia a esta tabla</a>
-            </div>
+                            <td>Operaciones</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in range (0, dato.0|length)%}
+                            <tr>
+                                {% for j in range(0, (dato.0[i]|length-1)) %}
+                                    <td>{{dato.0[i][j]}}</td>
+                                {% endfor %}
+                                <td>
+                                    <a href="/edit/{{base}}/{{dato.2}}/{{dato.0.0.0}}"> Edit</a>
+                                    <a href="/delete/{{base}}/{{dato.2}}/{{dato.0.0.0}}"> Delete</a>
+                                </td>
+                            </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {{ pagination[datos.index(dato)].links }}
         </div>
-    {% endfor %}
-{% endif %}
+        <div class="d-flex align-items-center"  style="margin-top:20px">
+            <a class="btn btn-info" href="/add/{{base}}/{{dato.2}}" role="button">Añadir instancia a esta tabla</a>
+        </div>
+    </div>
+{% endfor %}
 
 {% endblock %}
 {% block barra%}
