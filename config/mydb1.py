@@ -19,3 +19,13 @@ def db2():
 
     cursor2 = mydb2.cursor()
     return mydb2, cursor2
+
+
+def db3():
+    mydb3 = MySQLdb.connect(host='localhost',
+                            user='root',
+                            password='',
+                            db='manten_preventivo')
+
+    cursor3 = mydb3.cursor()
+    return mydb3, cursor3

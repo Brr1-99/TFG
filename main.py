@@ -5,7 +5,7 @@ from adjuntar.add import adjuntar
 from buscar.buscar import buscar
 from administrar.admin import admin
 from editar.editar import edit
-from config.mydb1 import db1, db2
+from config.mydb1 import db1, db2, db3
 from eliminar.eliminar import delete
 from mostrar.mostrar import indx
 
@@ -14,6 +14,8 @@ from mostrar.mostrar import indx
 mydb1, cursor1 = db1()
 
 mydb2, cursor2 = db2()
+
+mydb3, cursor3 = db3()
 
 # Creación API y conexión Blueprints
 app = Flask(__name__)
