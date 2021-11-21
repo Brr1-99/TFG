@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+{% block body%}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <p> {{message}}</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor%}
+{% endif %}
+{% endwith %}
+<div class="container" style="padding : 20px">
+<form action="/join" method="POST">
+    <div class="row">
+        <div class="col-md-4 col-lg-3 ">
+            <div class="form-group">
+                <select class="form-select" name="buscar">
+                    {% for table in tables_join %}
+                      <option value="list.{{tables_join.index(table)}}">{{table[-1]}} </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <button type="submit" class="btn btn-primary">
+            Crear relación
+            </button>
+        </div>
+    </div>
+</form>
+</div>
+
+{% endblock %}
+{% block barra%}
+    <div class="d-flex align-items-center">
+                <a class="btn btn-success" href="/salir" role="button">Cerrar sesión</a>
+            </div>
+{% endblock %}
