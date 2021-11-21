@@ -14,7 +14,7 @@ def join(db, table, id):
         if request.method == 'GET':
 
             datab, cur = db_cursor(db)
-            tables, rows, table_mid = table_for_joints(db, table)
+            tables = table_for_joints(db, table)[0]
 
             return render_template('join.html', tables_join=tables)
     else:

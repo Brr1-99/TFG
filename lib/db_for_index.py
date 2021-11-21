@@ -40,6 +40,7 @@ def db_for_index(db):
         ctable = list(cursor1.fetchall())
         for table in ctable:
             tables.append(table[0])
+        tables.remove('componente_maquina')
         cursor1.close()
     elif db == 'manten_correctivo':
 
