@@ -14,9 +14,14 @@
     {% endif %}
 {% endif %}
 <div class="container" style="padding : 20px">
+    <div class="row">
+            <div class="col-md-3 col-lg-6 ">
+                <a class="btn btn-warning" href="/join/{{db}}/{{table}}" role="button">Establecer Relaciones</a>
+            </div>
+        <div class="col-md-3 col-lg-6 ">
 <form action="{{url}}" method="POST">
     <div class="row">
-        <div class="col-md-4 col-lg-3">
+        <div class="col-md-3 col-lg-5">
             <div class="form-group">
                 <select class="form-select" name="criterio">
                     {% for col in columns[:-1] %}
@@ -25,20 +30,17 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-4 col-lg-3">
+        <div class="col-md-3 col-lg-5">
             <input type="text" class="form-control" name="nombre" value="" required>
         </div>
-        <div class="col-md-4 col-lg-2">
+        <div class="col-md-2 col-lg-2">
             <button type="submit" class="btn btn-primary">
             Buscar
             </button>
         </div>
     </div>
 </form>
-    <div class="row">
-        <div class="d-flex align-items-center"  style="margin-top:20px">
-                <a class="btn btn-info" href="/add/{{db}}/{{table}}" role="button">Añadir instancia a esta tabla</a>
-            </div>
+        </div>
     </div>
 </div>
 <div class="border rounded bg-light">
@@ -60,13 +62,17 @@
                     <td>
                         <a href="/edit/{{db}}/{{table}}/{{busqueda[i].0}}"> Edit</a>
                         <a href="/delete/{{db}}/{{table}}/{{busqueda[i].0}}"> Delete</a>
-                        <a href="/join/{{db}}/{{table}}/{{busqueda[i].0}}"> Join</a>
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+ <div class="row">
+        <div class="d-flex align-items-center"  style="margin-top:20px">
+                <a class="btn btn-info" href="/add/{{db}}/{{table}}" role="button">Añadir instancia a esta tabla</a>
+            </div>
+    </div>
 {% endblock %}
 {% block barra%}
     <div class="d-flex align-items-center">

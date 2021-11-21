@@ -7,15 +7,17 @@ joint = Blueprint('bp_join', __name__, static_folder="static", template_folder="
 mensaje_error = False
 
 
-@joint.route('/<string:db>/<string:table>/<string:id>', methods=['GET', 'POST'])
-def join(db, table, id):
+@joint.route('/<string:db>/', methods=['GET', 'POST'])
+def join(db):
     login = comprobar_sesion()
     if login:
         if request.method == 'GET':
-
             datab, cur = db_cursor(db)
-            tables = table_for_joints(db, table)[0]
-
-            return render_template('join.html', tables_join=tables)
+            tables, row, table_mid = table_for_joints(db)
+            if len(tables) > 1:
+                return render_template('join.html', tables_join=tables)
+            else:
+                cur.execute()
+                return render_template('join.html', tables_join=tables)
     else:
         return render_template('ingresar.html')
