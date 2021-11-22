@@ -1,5 +1,5 @@
 
-def table_for_joints(db):
+def table_joints(db):
     tables = []
     row_pairs = []
     table_mid = []
