@@ -15,7 +15,7 @@ semilla = bcrypt.gensalt()
 @admin.route("/registrar", methods=["GET", "POST"])
 def register():
     if request.method == "GET":
-        login = comprobar_sesion()
+        login = comprobar_sesion()[0]
         if login:
             return render_template('index.html')
         else:
@@ -58,7 +58,7 @@ def register():
 @admin.route("/ingresar", methods=["GET", "POST"])
 def ingresar():
     if request.method == "GET":
-        login = comprobar_sesion()
+        login = comprobar_sesion()[0]
         if login:
             return redirect(url_for('index'))
         else:
@@ -68,7 +68,7 @@ def ingresar():
         password = request.form['Password login']
         password_encode = password.encode('utf-8')
 
-        cursor2.execute("""SELECT  `Correo registro` , `Contraseña`, `Nombre`
+        cursor2.execute("""SELECT  `Correo registro` , `Contraseña`, `Nombre`, `id`
         FROM `Usuarios`
         WHERE `Correo registro` = %s """, [correo])
 
@@ -81,7 +81,8 @@ def ingresar():
             if encriptado == bcrypt.hashpw(password_encode, encriptado.encode('utf-8')).decode('utf-8'):
                 session['Nombre registro'] = usuario[2]
                 session['Correo registro'] = correo
-                flash(f"Bienvenido usuario: {usuario[2]}")
+                session['id_user'] = usuario[-1]
+                flash(f"Bienvenido usuario: {usuario[2]}. Su id es : '{usuario[-1]}'.")
                 return redirect(url_for('bp_inicio.inicio'))
 
             else:

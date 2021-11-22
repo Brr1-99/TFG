@@ -8,16 +8,18 @@ val_join = []
 
 @joint.route('/<string:db>/<string:table>/<string:id>', methods=['GET'])
 def join(db, table, id):
-    login = comprobar_sesion()
+    login = comprobar_sesion()[0]
     if login:
         if request.method == 'GET':
             val_join.append([db, table, id])
-            if len(val_join) > 1:
+            if len(val_join) < 2:
                 message = table_joints(val_join)
                 flash(f"{message}")
                 return redirect(url_for('bp_index.index', db=db))
             else:
-                flash('Seleccione el valor con el que desea relacionarlo.')
+                message = table_joints(val_join)
+                flash(f"{message}")
+                val_join.clear()
                 return redirect(url_for('bp_index.index', db=db))
     else:
         return render_template('ingresar.html')

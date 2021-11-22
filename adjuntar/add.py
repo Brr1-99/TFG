@@ -12,7 +12,7 @@ mensaje_error = False
 @adjuntar.route('/<string:db>/<string:table>')
 def add(db, table):
     global mensaje_error
-    login = comprobar_sesion()
+    login = comprobar_sesion()[0]
     if login:
         mensaje_error = False
         col = db_for_columns(db, table)
@@ -25,7 +25,7 @@ def add(db, table):
 @adjuntar.route('', methods=['GET', 'POST'])
 def add_table():
     global mensaje_error
-    login = comprobar_sesion()
+    login, id_user = comprobar_sesion()
     if login:
         if request.method == 'POST':
             mensaje_error = False
@@ -46,6 +46,10 @@ def add_table():
                 datas.append(request.form['col.{0}'.format(i+1)])
 
             names = to_mysql(col_name)
+
+            for i in col_name:
+                if i == 'id_user':
+                    datas[col_name.index(i)] = id_user
 
             cur.execute('INSERT INTO `{0}` {1} VALUES {2}'.format(table, names, tuple(datas)))
             datab.commit()

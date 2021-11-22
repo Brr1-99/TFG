@@ -13,7 +13,7 @@ mensaje_error = False
 @buscar.route('', methods=['GET', 'POST'])
 def search():
     global mensaje_error
-    login = comprobar_sesion()
+    login = comprobar_sesion()[0]
     if login:
         if request.method == 'POST':
             mensaje_error = False

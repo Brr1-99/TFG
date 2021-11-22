@@ -11,7 +11,7 @@ mensaje_error = False
 @edit.route('/<string:db>/<string:table>/<string:id>')
 def edit_contact(db, table, id):
     global mensaje_error
-    login = comprobar_sesion()
+    login = comprobar_sesion()[0]
     if login:
         mensaje_error = False
         datab, cur = db_cursor(db)
@@ -26,7 +26,7 @@ def edit_contact(db, table, id):
 @edit.route('', methods=['GET', 'POST'])
 def update_contact():
     global mensaje_error
-    login = comprobar_sesion()
+    login = comprobar_sesion()[0]
     if login:
         if request.method == 'POST':
             mensaje_error = False

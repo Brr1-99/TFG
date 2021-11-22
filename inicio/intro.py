@@ -6,7 +6,7 @@ iniciar = Blueprint('bp_inicio', __name__, static_folder="static", template_fold
 
 @iniciar.route('/')
 def inicio():
-    login = comprobar_sesion()
+    login = comprobar_sesion()[0]
     if login:
         return render_template('inicio.html')
     else:
