@@ -49,7 +49,8 @@ def add_table():
 
             for i in col_name:
                 if i == 'id_user':
-                    datas[col_name.index(i)] = id_user
+                    if not datas[col_name.index(i)]:
+                        datas[col_name.index(i)] = id_user
 
             cur.execute('INSERT INTO `{0}` {1} VALUES {2}'.format(table, names, tuple(datas)))
             datab.commit()
