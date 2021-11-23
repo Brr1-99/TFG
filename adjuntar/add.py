@@ -16,8 +16,13 @@ def add(db, table):
     if login:
         mensaje_error = False
         col = db_for_columns(db, table)
+        col_name = []
+        for column in col[1:-1]:
+            if column[0][:3] != 'id_':
+                col_name.append(column)
+        print(col_name)
         flash('Conexión con la tabla {0} realizada con éxito.'.format(table))
-        return render_template('add.html', mensaje=mensaje_error, columns=col)
+        return render_template('add.html', mensaje=mensaje_error, columns=col_name)
     else:
         return render_template('ingresar.html')
 
@@ -39,19 +44,15 @@ def add_table():
             cur.execute('Show Columns FROM {0}'.format(table))
             columns = cur.fetchall()
             for column in columns[1:-1]:
-                col_name.append(column[0])
-
+                if column[0][:3] != 'id_':
+                    col_name.append(column[0])
+            print(col_name)
             datas = []
             for i in range(len(col_name)):
-                datas.append(request.form['col.{0}'.format(i+1)])
+                datas.append(request.form['col.{0}'.format(i)])
+            print(datas)
 
             names = to_mysql(col_name)
-
-            for i in col_name:
-                if i == 'id_user':
-                    if not datas[col_name.index(i)]:
-                        datas[col_name.index(i)] = id_user
-
             cur.execute('INSERT INTO `{0}` {1} VALUES {2}'.format(table, names, tuple(datas)))
             datab.commit()
             flash('Pieza añadida a la tabla "{0}" correctamente'.format(table))

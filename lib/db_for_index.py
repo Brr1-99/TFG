@@ -23,13 +23,13 @@ def db_for_index(db):
         c1 = cursor1.fetchall()
         datos.append([d1, c1, 'componente'])
 
-        cursor1.execute('Select * FROM maquina_herramienta ORDER BY `Fecha Modificación` DESC LIMIT %s OFFSET %s', (limit, offset))
+        cursor1.execute('Select * FROM maquina ORDER BY `Fecha Modificación` DESC LIMIT %s OFFSET %s', (limit, offset))
         d2 = cursor1.fetchall()
         t2 = len(d2)
 
-        cursor1.execute('Show Columns FROM maquina_herramienta')
+        cursor1.execute('Show Columns FROM maquina')
         c2 = cursor1.fetchall()
-        datos.append([d2, c2, 'maquina_herramienta'])
+        datos.append([d2, c2, 'maquina'])
 
         pagination = Pagination(page=page, per_page=limit, total=t1, record_name='index')
         pagination2 = Pagination(page=page, per_page=limit, total=t2, record_name='index')
@@ -50,21 +50,21 @@ def db_for_index(db):
         limit = 5
         offset = page * limit - limit
 
-        cursor2.execute('Select * FROM incidencias ORDER BY `id` DESC LIMIT %s OFFSET %s', (limit, offset))
+        cursor2.execute('Select * FROM actuacion ORDER BY `id` DESC LIMIT %s OFFSET %s', (limit, offset))
         d1 = cursor2.fetchall()
         t1 = len(d1)
 
-        cursor2.execute('Show Columns FROM incidencias')
+        cursor2.execute('Show Columns FROM actuacion')
         c1 = cursor2.fetchall()
-        datos.append([d1, c1, 'incidencias'])
+        datos.append([d1, c1, 'actuacion'])
 
-        cursor2.execute('Select * FROM protocolos ORDER BY `id` DESC LIMIT %s OFFSET %s', (limit, offset))
+        cursor2.execute('Select * FROM incidencia ORDER BY `id` DESC LIMIT %s OFFSET %s', (limit, offset))
         d2 = cursor2.fetchall()
         t2 = len(d2)
 
-        cursor2.execute('Show Columns FROM protocolos')
+        cursor2.execute('Show Columns FROM incidencia')
         c2 = cursor2.fetchall()
-        datos.append([d2, c2, 'protocolos'])
+        datos.append([d2, c2, 'incidencia'])
 
         pagination = Pagination(page=page, per_page=limit, total=t1, record_name='index')
         pagination2 = Pagination(page=page, per_page=limit, total=t2, record_name='index')
@@ -91,7 +91,7 @@ def db_for_index(db):
 
         cursor3.execute('Show Columns FROM actuacion_preventiva')
         c1 = cursor3.fetchall()
-        datos.append([d1, c1, 'incidencias'])
+        datos.append([d1, c1, 'incidencia'])
 
         pagination = Pagination(page=page, per_page=limit, total=t1, record_name='index')
         pages.append(pagination)

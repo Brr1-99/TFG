@@ -13,11 +13,11 @@
 <div class="container" style="padding : 20px">
     <form action="/add" method="POST">
         <div class="row">
-            {% for i in range (0, (columns|length)-1) %}
-                {% if columns[i].0 != "id" %}
-                    <div class="col-md-4 col-lg-3">
-                        <input type="text" class="form-control" name="col.{{i}}" placeholder="{{columns[i].0}}" required>
-                    </div>
+            {% for i in range (0, (columns|length)) %}
+                {% if columns[i].0 != "id"%}
+                        <div class="col-md-4 col-lg-3">
+                            <input type="text" class="form-control" name="col.{{i}}" placeholder="{{columns[i].0}}" required>
+                        </div>
                 {% endif %}
             {% endfor %}
         </div>

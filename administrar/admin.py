@@ -60,7 +60,7 @@ def ingresar():
     if request.method == "GET":
         login = comprobar_sesion()[0]
         if login:
-            return redirect(url_for('index'))
+            return redirect(url_for('bp_index.index', db='inventario'))
         else:
             return render_template('ingresar.html')
     else:
