@@ -1,10 +1,10 @@
 from lib.insert_tables import insert_tables
 relaciones = {'componente': ['maquina', 'protocolo'],
-              'actuacion': ['incidencis'],
-              'incidencia': ['maquina', 'protocolo', 'actuacion'],
+              'actuacion': ['incidencia', 'usuario'],
+              'incidencia': ['maquina', 'protocolo', 'actuacion', 'usuario'],
               'maquina': ['componente', 'incidencia', 'actuacion_preventivo'],
               'protocolo': ['incidencia', 'componente'],
-              'actuacion_preventivo': ['maquina']
+              'actuacion_preventivo': ['maquina', 'usuario']
               }
 
 join1 = []
