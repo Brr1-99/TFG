@@ -28,8 +28,9 @@ def mysql(option, data1, data2, columna):
         table = data1[0][1]
         name = columna
         datas = data2[0][2]
+        id_ppal_table = data1[0][2]
         print('INSERT INTO `{0}` {1} VALUES {2}'.format(table, tuple(name), datas), option)
-        cursor.execute('INSERT INTO `{0}` {1} VALUES {2}'.format(table, tuple(name), datas))
+        cursor.execute('UPDATE `{0}` SET `{1}`= {2} WHERE `id` = {3}'.format(table, name[0], datas, id_ppal_table))
         mydb.commit()
 
     else:
@@ -38,8 +39,9 @@ def mysql(option, data1, data2, columna):
         table = data2[0][1]
         name = columna
         datas = data1[0][2]
+        id_ppal_table = data2[0][2]
         print('INSERT INTO `{0}` {1} VALUES {2}'.format(table, tuple(name), datas), option)
-        cursor.execute('INSERT INTO `{0}` {1} VALUES {2}'.format(table, tuple(name), datas))
+        cursor.execute('UPDATE `{0}` SET `{1}`= {2} WHERE `id` = {3}'.format(table, name[0], datas, id_ppal_table))
         mydb.commit()
 
 
