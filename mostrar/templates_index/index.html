@@ -13,7 +13,50 @@
 <div class="container" style="padding : 20px">
     <div class="row">
             <div class="col-md-3 col-lg-6 ">
-                <a class="btn btn-warning" href="/join/{{base}}" role="button">Establecer Relaciones</a>
+               <!-- Button trigger modal -->
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter">
+                  Como relacionar
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h6 class="modal-title" id="exampleModalLongTitle">Información sobre la función de relacionar datos.</h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                          <h6> Para crear una relación satisfactoria entre dos valores de distintas tablas se debe seguir un único criterio. </h6>
+                          <p> Debe existir un campo a través del cual relacionarlas.</p>
+                          <hr>
+                          <p> A continuación se mostrará una tabla con las posibles combinaciones:</p>
+                          <div class="border rounded bg-light">
+                            <table class="table table-light table-striped table-hover">
+                                <thead>
+                                    <tr class="table-primary">
+                                        <td>Tabla Base</td>
+                                        <td>Tablas a Relacionar</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for key, value in relate.items() %}
+                                        <tr>
+                                            <td>{{key|capitalize}}</td>
+                                            <td>{{value}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                          </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Entendido</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             </div>
         <div class="col-md-3 col-lg-6 ">
     <form action="/search" method="POST">

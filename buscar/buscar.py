@@ -4,6 +4,7 @@ from lib.comprobar_sesión import comprobar_sesion
 from lib.db_cursor import db_cursor
 from lib.db_for_columns import db_for_columns
 from lib.db_for_index import db_for_index
+from lib.table_for_joints import relaciones
 
 buscar = Blueprint('bp_busqueda', __name__, static_folder="static", template_folder="templates_search")
 
@@ -54,7 +55,7 @@ def search_data(db, table):
 
             pagination = Pagination(page=page, per_page=limit, total=length, record_name='search')
 
-            return render_template('search.html', pagination=pagination, busqueda=data, url=current_url, columns=col, db=db, table=table, mensaje=mensaje_error)
+            return render_template('search.html', pagination=pagination, busqueda=data, url=current_url, columns=col, db=db, table=table, mensaje=mensaje_error, relate=relaciones)
         else:
             mensaje_error = True
             current_url = str(request.url)
@@ -81,7 +82,7 @@ def search_data(db, table):
 
                 pagination = Pagination(page=page, per_page=limit, total=length, record_name='search')
 
-                return render_template('search.html', pagination=pagination, busqueda=data, url=current_url, columns=col, db=db, table=table, mensaje=mensaje_error)
+                return render_template('search.html', pagination=pagination, busqueda=data, url=current_url, columns=col, db=db, table=table, mensaje=mensaje_error, relate=relaciones)
             else:
                 return redirect(url_for('bp_busqueda.search_data', db=db, table=table, mensaje=mensaje_error))
     else:
