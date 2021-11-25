@@ -13,12 +13,16 @@ def mysql(option, data1, data2, columna):
         mydb, cursor = db_cursor(data1[0][0])
 
         col_name = []
-        for column in col[:-1]:
+        for column in col:
             col_name.append(column[0])
-        names = to_mysql(col_name)
 
-        datas = [data1[0][2], data2[0][2]]
-        datas.sort()
+        names = to_mysql(col_name)
+        datas = []
+        if name[0] == data1[0][1]:
+            datas = [data1[0][2], data2[0][2]]
+        else:
+            datas = [data2[0][2], data1[0][2]]
+        print('INSERT INTO `{0}` {1} VALUES {2}'.format(table, names, tuple(datas)))
         cursor.execute('INSERT INTO `{0}` {1} VALUES {2}'.format(table, names, tuple(datas)))
         mydb.commit()
 
@@ -29,7 +33,6 @@ def mysql(option, data1, data2, columna):
         name = columna
         datas = data2[0][2]
         id_ppal_table = data1[0][2]
-        print('INSERT INTO `{0}` {1} VALUES {2}'.format(table, tuple(name), datas), option)
         cursor.execute('UPDATE `{0}` SET `{1}`= {2} WHERE `id` = {3}'.format(table, name[0], datas, id_ppal_table))
         mydb.commit()
 
@@ -40,7 +43,6 @@ def mysql(option, data1, data2, columna):
         name = columna
         datas = data1[0][2]
         id_ppal_table = data2[0][2]
-        print('INSERT INTO `{0}` {1} VALUES {2}'.format(table, tuple(name), datas), option)
         cursor.execute('UPDATE `{0}` SET `{1}`= {2} WHERE `id` = {3}'.format(table, name[0], datas, id_ppal_table))
         mydb.commit()
 
