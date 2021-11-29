@@ -76,7 +76,7 @@ def search_data(db, table):
 
             if length > 0:
 
-                cur.execute("""SELECT * FROM {0} WHERE `{1}` = '{2}' ORDER BY `Fecha Modificación` DESC LIMIT {3} OFFSET {4}""".format(table, criterio, nombre, limit, offset))
+                cur.execute("""SELECT * FROM {0} WHERE `{1}` LIKE '%{2}%' ORDER BY `Fecha Modificación` DESC LIMIT {3} OFFSET {4}""".format(table, criterio, nombre, limit, offset))
                 datab.commit()
                 data = cur.fetchall()
 
