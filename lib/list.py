@@ -20,7 +20,7 @@ def get_list(id):
 
     cursor1.execute('Show Columns FROM componente')
     c1 = cursor1.fetchall()
-    datos.append([d1, c1, f'Lista Componentes Maquina: {id}'])
+    datos.append([d1, c1, f'Lista de Componentes de la Maquina de id : {id}'])
     print(datos)
 
     pagination = Pagination(page=page, per_page=limit, total=t1, record_name='list')

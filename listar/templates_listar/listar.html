@@ -35,9 +35,9 @@
                                 <td>{{datos.0.0[i][j]}}</td>
                             {% endfor %}
                             <td>
-                                <a href="/edit/{{base}}/{{table}}/{{datos.0.0.0.0}}"> Edit</a>
-                                <a href="/delete/{{base}}/{{table}}/{{datos.0.0.0.2}}"> Delete</a>
-                                <a href="/join/{{base}}/{{table}}/{{datos.0.0.0.2}}"> Join</a>
+                                <a href="/edit/{{base}}/{{table}}/{{datos.0.0[i][2]}}"> Edit</a>
+                                <a href="/delete/{{base}}/{{table}}/{{datos.0.0[i][2]}}"> Delete</a>
+                                <a href="/join/{{base}}/{{table}}/{{datos.0.0[i][2]}}"> Join</a>
                             </td>
                         </tr>
                 {% endfor %}
