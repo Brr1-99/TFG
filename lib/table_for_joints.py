@@ -44,6 +44,7 @@ def table_joints(db, table, id):
         data1.clear()
         join2 = []
         data1.append([db, table, id])
+        print(data1)
         step = 2
         return mensaje1, join1
     else:

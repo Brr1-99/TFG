@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+{% block body%}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <p> {{message}}</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor%}
+{% endif %}
+{% endwith %}
+{% if mensaje %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p> No hay coincidencias. Pruebe con otro criterio de búsqueda. </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+<div class="container" style="padding : 20px">
+    <div class="border rounded bg-light">
+        <h6> {{datos.0.2|capitalize}}</h6>
+        <table class="table table-light table-striped table-hover">
+            <thead>
+                <tr class="table-primary">
+                    {% for valor in datos.0.1[:-1] %}
+                        <td>{{valor.0|capitalize}}</td>
+                    {% endfor %}
+                        <td>Operaciones</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in range (0, datos.0.0|length)%}
+                        <tr>
+                            {% for j in range(2, (datos.0.0[i]|length-1)) %}
+                                <td>{{datos.0.0[i][j]}}</td>
+                            {% endfor %}
+                            <td>
+                                <a href="/edit/{{base}}/{{table}}/{{datos.0.0.0.0}}"> Edit</a>
+                                <a href="/delete/{{base}}/{{table}}/{{datos.0.0.0.2}}"> Delete</a>
+                                <a href="/join/{{base}}/{{table}}/{{datos.0.0.0.2}}"> Join</a>
+                            </td>
+                        </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {{ pagination.links }}
+    </div>
+    <div class="d-flex align-items-center"  style="margin-top:20px">
+        <a class="btn btn-info" href="/add/{{base}}/{{table}}" role="button">Añadir nuevo Componente</a>
+    </div>
+</div>
+{% endblock %}
+{% block barra%}
+    <div class="d-flex align-items-center">
+                <a class="btn btn-success" href="/salir" role="button">Cerrar sesión</a>
+            </div>
+{% endblock %}
+

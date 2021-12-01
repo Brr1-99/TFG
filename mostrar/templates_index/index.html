@@ -95,6 +95,9 @@
                             <td>{{valor.0|capitalize}}</td>
                         {% endfor %}
                             <td>Operaciones</td>
+                            {% if tables[datos.index(dato)]== 'maquina'%}
+                                <td> Lista Componentes</td>
+                            {% endif %}
                     </tr>
                 </thead>
                 <tbody>
@@ -108,6 +111,11 @@
                                     <a href="/delete/{{base}}/{{dato.2}}/{{dato.0.0.0}}"> Delete</a>
                                     <a href="/join/{{base}}/{{dato.2}}/{{dato.0.0.0}}"> Join</a>
                                 </td>
+                                {% if tables[datos.index(dato)]== 'maquina'%}
+                                    <td>
+                                        <a href="/list/{{base}}/{{dato.2}}/{{dato.0.0.0}}"> Lista</a>
+                                    </td>
+                                {% endif %}
                             </tr>
                     {% endfor %}
                 </tbody>

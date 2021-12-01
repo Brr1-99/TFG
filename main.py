@@ -9,6 +9,7 @@ from config.mydb1 import db1, db2, db3
 from eliminar.eliminar import delete
 from mostrar.mostrar import indx
 from relacionar.join import joint
+from listar.listar import listar
 
 # Conexión a todas las bases de datos
 
@@ -28,6 +29,7 @@ app.register_blueprint(edit, url_prefix="/edit")
 app.register_blueprint(delete, url_prefix="/delete")
 app.register_blueprint(indx, url_prefix="/index")
 app.register_blueprint(joint, url_prefix="/join")
+app.register_blueprint(listar, url_prefix="/list")
 
 # Ajustes
 app.secret_key = "sE+gcUVWsU491sJ"

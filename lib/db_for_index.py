@@ -42,6 +42,7 @@ def db_for_index(db):
             tables.append(table[0])
         tables.remove('componente_maquina')
         cursor1.close()
+
     elif db == 'manten_correctivo':
 
         cursor2 = db2()[1]
