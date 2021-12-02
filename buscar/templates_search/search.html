@@ -65,7 +65,9 @@
                         <div class="form-group">
                             <select class="form-select" name="criterio">
                                 {% for col in columns[:-1] %}
-                                  <option value="{{col.0}}">{{col.0}} </option>
+                                    {% if col.0 != "imagen"%}
+                                        <option value="{{col.0}}">{{col.0}} </option>
+                                    {% endif %}
                                 {% endfor %}
                             </select>
                         </div>
@@ -88,7 +90,7 @@
         <thead>
         <tr class="table-primary">
             {% for column in columns[:-1] %}
-                <td>{{column.0}}</td>
+                    <td>{{column.0}}</td>
             {% endfor %}
             <td>Operaciones</td>
         </tr>

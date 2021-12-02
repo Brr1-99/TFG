@@ -1,5 +1,4 @@
 from flask import Flask, render_template, session
-
 from inicio.intro import iniciar
 from adjuntar.add import adjuntar
 from buscar.buscar import buscar
@@ -10,6 +9,7 @@ from eliminar.eliminar import delete
 from mostrar.mostrar import indx
 from relacionar.join import joint
 from listar.listar import listar
+from subir.subir import uploads
 
 # Conexión a todas las bases de datos
 
@@ -30,9 +30,13 @@ app.register_blueprint(delete, url_prefix="/delete")
 app.register_blueprint(indx, url_prefix="/index")
 app.register_blueprint(joint, url_prefix="/join")
 app.register_blueprint(listar, url_prefix="/list")
+app.register_blueprint(uploads, url_prefix="/upload")
 
 # Ajustes
 app.secret_key = "sE+gcUVWsU491sJ"
+UPLOAD_FOLDER = 'static/uploads/'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 
 # Rutas Web
