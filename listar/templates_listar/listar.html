@@ -32,7 +32,20 @@
                 {% for i in range (0, datos.0.0|length)%}
                         <tr>
                             {% for j in range(2, (datos.0.0[i]|length-1)) %}
-                                <td>{{datos.0.0[i][j]}}</td>
+                                {% if j == (datos.0.0[i]|length-2)%}
+                                        {% if datos.0.0[i][j] %}
+                                                <td>
+                                                    <img class='w-25' src="{{ url_for('bp_upload.display_image', filename=datos.0.0[i][j]) }}">
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    <a href="/upload/{{base}}/{{datos.0.2}}/{{dato.0.0[i][0]}}"> Añadir imagen</a>
+                                                </td>
+                                        {% endif %}
+                                {% else %}
+                                        <td>{{datos.0.0[i][j]}}</td>
+                                {% endif %}
+
                             {% endfor %}
                             <td>
                                 <a href="/edit/{{base}}/{{table}}/{{datos.0.0[i][2]}}"> Edit</a>

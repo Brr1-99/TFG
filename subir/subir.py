@@ -53,4 +53,3 @@ def upload_commit():
 @uploads.route('/display/<filename>')
 def display_image(filename):
     return redirect(url_for('static', filename='uploads/' + filename), code=301)
-
