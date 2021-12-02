@@ -20,7 +20,6 @@ def add(db, table):
         for column in col[1:-1]:
             if column[0][:3] != 'id_':
                 col_name.append(column)
-        print(col_name)
         flash('Conexión con la tabla {0} realizada con éxito.'.format(table))
         return render_template('add.html', mensaje=mensaje_error, columns=col_name)
     else:
@@ -44,13 +43,11 @@ def add_table():
             cur.execute('Show Columns FROM {0}'.format(table))
             columns = cur.fetchall()
             for column in columns[1:-1]:
-                if column[0][:3] != 'id_':
+                if column[0][:3] != 'id_' and column[0] != 'imagen':
                     col_name.append(column[0])
-            print(col_name)
             datas = []
             for i in range(len(col_name)):
                 datas.append(request.form['col.{0}'.format(i)])
-            print(datas)
 
             names = to_mysql(col_name)
             cur.execute('INSERT INTO `{0}` {1} VALUES {2}'.format(table, names, tuple(datas)))
