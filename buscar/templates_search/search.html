@@ -99,7 +99,19 @@
             {% for i in range (0, busqueda|length)%}
                 <tr>
                     {% for j in range (0, (busqueda[i]|length-1))%}
-                        <td>{{busqueda[i][j]}}</td>
+                        {% if j == (busqueda[i]|length-2)%}
+                                {% if busqueda[i][j] %}
+                                    <td>
+                                        <img class='w-25' src="{{ url_for('bp_upload.display_image', filename=busqueda[i][j]) }}">
+                                    </td>
+                                {% else %}
+                                    <td>
+                                        <a href="/upload/{{db}}/{{table}}/{{busqueda[i].0}}"> Añadir imagen</a>
+                                    </td>
+                                {% endif %}
+                        {% else %}
+                            <td>{{busqueda[i][j]}}</td>
+                        {% endif %}
                     {% endfor %}
                     <td>
                         <a href="/edit/{{db}}/{{table}}/{{busqueda[i].0}}"> Edit</a>

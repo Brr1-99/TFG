@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 from lib.comprobar_sesión import comprobar_sesion
 from lib.db_cursor import db_cursor
 
+last_url = ''
 
 uploads = Blueprint('bp_upload', __name__, static_folder="static", template_folder="templates_upload")
 
@@ -16,8 +17,10 @@ def allowed_file(filename):
 
 @uploads.route('/<string:db>/<string:table>/<string:id>', methods=['GET'])
 def upload(db, table, id):
+    global last_url
     login = comprobar_sesion()[0]
     if login:
+        last_url = request.referrer
         return render_template('upload.html')
     else:
         return render_template('ingresar.html')
@@ -44,7 +47,7 @@ def upload_commit():
         base.commit()
 
         flash('Image successfully uploaded')
-        return redirect(url_for('bp_index.index', db=db))
+        return redirect(last_url)
     else:
         flash('Allowed image types are - png, jpg, jpeg, gif')
         return redirect(request.url)
