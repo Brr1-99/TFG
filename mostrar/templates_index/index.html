@@ -87,7 +87,7 @@
     <div class="container" style="padding : 20px">
         <div class="border rounded bg-light">
             <h6> {{tables[datos.index(dato)]|capitalize}}</h6>
-<!--            {{ pagination[datos.index(dato)].info }} -->
+        <!-- {{ pagination[datos.index(dato)].info }} -->
             <table class="table table-light table-striped table-hover">
                 <thead>
                     <tr class="table-primary">
@@ -95,7 +95,7 @@
                             <td>{{valor.0|capitalize}}</td>
                         {% endfor %}
                             <td>Operaciones</td>
-                            {% if tables[datos.index(dato)]== 'maquina'%}
+                            {% if tables[datos.index(dato)]== 'maquina' %}
                                 <td> Lista Componentes</td>
                             {% endif %}
                     </tr>
@@ -104,7 +104,7 @@
                     {% for i in range (0, dato.0|length)%}
                             <tr>
                                 {% for j in range(0, (dato.0[i]|length-1))%}
-                                    {% if j == (dato.0[i]|length-2)%}
+                                    {% if dato.1[j][0] == 'imagen' %}
                                         {% if dato.0[i][j] %}
                                             <td>
                                                 <img class='w-25' src="{{ url_for('bp_upload.display_image', filename=dato.0[i][j]) }}">

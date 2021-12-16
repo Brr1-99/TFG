@@ -99,7 +99,7 @@
             {% for i in range (0, busqueda|length)%}
                 <tr>
                     {% for j in range (0, (busqueda[i]|length-1))%}
-                        {% if j == (busqueda[i]|length-2)%}
+                        {% if columns[j][0] == 'imagen'%}
                                 {% if busqueda[i][j] %}
                                     <td>
                                         <img class='w-25' src="{{ url_for('bp_upload.display_image', filename=busqueda[i][j]) }}">
@@ -116,7 +116,7 @@
                     <td>
                         <a href="/edit/{{db}}/{{table}}/{{busqueda[i].0}}"> Edit</a>
                         <a href="/delete/{{db}}/{{table}}/{{busqueda[i].0}}"> Delete</a>
-                        <a href="/join/{{db}}/{{table}}/{{busqueda[i].0}}"> Join</a>
+                        <a href="/join/{{db}}/{{table}}/{{busqueda[i].0}}/0"> Join</a>
                     </td>
                 </tr>
             {% endfor %}

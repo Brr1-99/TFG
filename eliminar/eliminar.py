@@ -11,10 +11,13 @@ def delete_contact(db, table, id):
     login = comprobar_sesion()[0]
     if login:
         datab, cur = db_cursor(db)
-        cur.execute('SELECT `imagen` FROM `{0}` WHERE id = {1}'.format(table, id))
-        image = cur.fetchone()
-        filename = image[0]
-        os.remove('static/uploads/' + filename)
+        try:
+            cur.execute('SELECT `imagen` FROM `{0}` WHERE id = {1}'.format(table, id))
+            image = cur.fetchone()
+            filename = image[0]
+            os.remove('static/uploads/' + filename)
+        except Exception as E:
+            pass
         cur.execute('DELETE FROM `{0}` WHERE id = {1}'.format(table, id))
         datab.commit()
         flash('Item de la tabla "{0}" eliminado correctamente'.format(table))
