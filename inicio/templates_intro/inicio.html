@@ -3,86 +3,51 @@
 {% with messages = get_flashed_messages() %}
 {% if messages %}
 {% for message in messages %}
-        <div class="alert alert-info alert-dismissible fade show" role="alert">
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
         <p> {{message}}</p>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 {% endfor%}
 {% endif %}
 {% endwith %}
-<div class="container" style="margin-top: 50px">
-  <div class="row">
-    <div class="col-sm-4">
-      <div class="card">
-        <div class="card-body">
-            <div class="accordion accordion-flush" id="acordeon-1">
-                <div class="accordion-item">
-                  <h3 class="accordion-header" id="flush-cabecera-1">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-1" aria-expanded="false" aria-controls="flush-1">
-                      <h5>Inventario</h5>
-                    </button>
-                  </h3>
-                  <div id="flush-1" class="accordion-collapse collapse" aria-labelledby="flush-cabecera-1" data-bs-parent="#acordeon-1">
-                    <div class="card">
-                        <div class="card-body">
-                          <p class="card-text">Almacenamiento de las piezas presentes en los talleres.</p>
-                            <p class="card-text">También se encuentran aquí las máquinas y sus lista de componentes.</p>
-                          <a href=/index/inventario class="btn btn-danger">Visitar el inventario</a>
-                        </div>
-                      </div>
-                  </div>
+{ print('3')
+}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="p-3 border shadow rounded bg-white">
+                <h5 class="text-center">Inventario</h5>
+                <hr/>
+                <p class="text-center">Almacenamiento de las piezas presentes en los talleres.</p>
+                <p class="text-center">También se encuentran aquí las máquinas y sus lista de componentes.</p>
+                <div class="d-flex justify-content-center">
+                    <a href=/index/inventario class="btn btn-danger" style="background-color: #6b705c; border-color: #6b705c">Visitar el inventario</a>
                 </div>
             </div>
         </div>
-      </div>
+        <div class="col-md-4">
+            <div class="p-3 border shadow rounded bg-white">
+                <h5 class="text-center">Registro de Incidencias</h5>
+                <hr/>
+                <p class="text-center">Almacenamiento de las piezas presentes en los talleres.</p>
+                <p class="text-center">También se encuentran aquí las máquinas y sus lista de componentes.</p>
+                <div class="d-flex justify-content-center">
+                    <a href=/index/inventario class="btn btn-danger" style="background-color: #6b705c; border-color: #6b705c">Visitar el inventario</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-3 border shadow rounded bg-white">
+                <h5 class="text-center">Mantenimeinto preventivo</h5>
+                <hr/>
+                <p class="text-center">Almacenamiento de las piezas presentes en los talleres.</p>
+                <p class="text-center">También se encuentran aquí las máquinas y sus lista de componentes.</p>
+                <div class="d-flex justify-content-center">
+                    <a href=/index/inventario class="btn btn-danger" style="background-color: #6b705c; border-color: #6b705c">Visitar el inventario</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-sm-4">
-      <div class="card">
-        <div class="card-body">
-            <div class="accordion accordion-flush" id="acordeon-2">
-                <div class="accordion-item">
-                  <h3 class="accordion-header" id="flush-cabecera-2">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-2" aria-expanded="false" aria-controls="flush-2">
-                      <h5>Registro de Incidencias</h5>
-                    </button>
-                  </h3>
-                  <div id="flush-2" class="accordion-collapse collapse" aria-labelledby="flush-cabecera-2" data-bs-parent="#acordeon-2">
-                    <div class="card">
-                        <div class="card-body">
-                          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                          <a href=/index/manten_correctivo class="btn btn-success">Visitar el Registro</a>
-                        </div>
-                      </div>
-                  </div>
-                </div>
-            </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-4">
-      <div class="card">
-        <div class="card-body">
-            <div class="accordion accordion-flush" id="acordeon-3">
-                <div class="accordion-item">
-                  <h3 class="accordion-header" id="flush-cabecera-3">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-3" aria-expanded="false" aria-controls="flush-3">
-                      <h5>Mantenimiento preventivo</h5>
-                    </button>
-                  </h3>
-                  <div id="flush-3" class="accordion-collapse collapse" aria-labelledby="flush-cabecera-3" data-bs-parent="#acordeon-3">
-                    <div class="card">
-                        <div class="card-body">
-                          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                          <a href=/index/manten_preventivo class="btn btn-info">Zona de Mantenimiento</a>
-                        </div>
-                      </div>
-                  </div>
-                </div>
-            </div>
-        </div>
-      </div>
-      </div>
-  </div>
 </div>
 {% endblock %}
 {% block barra%}
