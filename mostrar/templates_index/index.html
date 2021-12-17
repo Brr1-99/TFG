@@ -135,7 +135,7 @@
             {{ pagination[datos.index(dato)].links }}
         </div>
         <div class="d-flex align-items-center"  style="margin-top:15px">
-            <a class="btn btn-info" href="/add/{{base}}/{{dato.2}}" role="button">Añadir nuevo dato a esta tabla</a>
+            <a class="btn btn-info" style="background-color: #adc178; border-color: #adc178" href="/add/{{base}}/{{dato.2}}" role="button">Añadir nuevo dato a esta tabla</a>
         </div>
     </div>
 {% endfor %}
@@ -143,7 +143,7 @@
 {% endblock %}
 {% block barra%}
     <div class="d-flex align-items-center">
-                <a class="btn btn-success" href="/salir" role="button">Cerrar sesión</a>
+                <a class="btn btn-success" style="background-color: #cb997e; border-color: #cb997e" href="/salir" role="button">Cerrar sesión</a>
             </div>
 {% endblock %}
 

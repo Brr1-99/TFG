@@ -18,7 +18,7 @@ def edit_contact(db, table, id):
         cur.execute('Select * FROM {0} WHERE id = {1}'.format(table, id))
         datos = cur.fetchall()
         flash('Por favor especifíque los nuevo valores')
-        return render_template('edit.html', contact=datos[0])
+        return render_template('edit.html', contact=datos[0], indice=id, tabla=table)
     else:
         return render_template('ingresar.html')
 
