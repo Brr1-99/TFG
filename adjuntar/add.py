@@ -21,7 +21,7 @@ def add(db, table):
             if column[0][:3] != 'id_':
                 col_name.append(column)
         flash('Conexión con la tabla {0} realizada con éxito.'.format(table))
-        return render_template('add.html', mensaje=mensaje_error, columns=col_name)
+        return render_template('add.html', mensaje=mensaje_error, columns=col_name, tabla=table)
     else:
         return render_template('ingresar.html')
 

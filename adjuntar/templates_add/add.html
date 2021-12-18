@@ -10,31 +10,28 @@
 {% endfor%}
 {% endif %}
 {% endwith %}
-<div class="container" style="padding : 20px">
-    <form action="/add" method="POST">
-        <div class="row" style="margin-bottom:20px">
-            {% for i in range (0, (columns|length)) %}
-                {% if columns[i].0 != "id" and columns[i].0 != "imagen" %}
-                        <div class="col-md-4 col-lg-3">
-                            <input type="text" class="form-control" name="col.{{i}}" placeholder="{{columns[i].0}}" required>
-                        </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-        <div class="container" style="margin-top: 20px">
-            <div class="row">
-                <div class="col-md-4 col-lg-2">
-                    <button type="submit" class="btn btn-primary">
-                    Enviar
-                    </button>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
+<h2 class="text-center mb-4">Añadiendo componente de tabla <span class="fw-bolder">'{{tabla}}'</span></h2>
+<hr/>
+<form action="/add" method="POST">
+    <div class="row">
+        {% for i in range (0, (columns|length)) %}
+            {% if columns[i].0 != "id" and columns[i].0 != "imagen" %}
+                    <div class="col-6 col-sm-5 col-md-4 col-lg-3 mb-2">
+                        <input type="text" class="form-control" name="col.{{i}}" placeholder="{{columns[i].0}}" required>
+                    </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <hr/>
+    <button type="submit" class="btn btn-primary">
+    Enviar
+    </button>
+</form>
 {% endblock %}
 {% block barra%}
     <div class="d-flex align-items-center">
-                <a class="btn btn-success" style="background-color: #cb997e; border-color: #cb997e" href="/salir" role="button">Cerrar sesión</a>
-            </div>
+        <a class="btn btn-success" style="background-color: #ef4444; border-color: #ef4444" href="/salir" role="button">
+            Cerrar sesión <i class="bi bi-arrow-bar-down"></i>
+        </a>
+    </div>
 {% endblock %}
