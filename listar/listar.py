@@ -11,8 +11,7 @@ mensaje_error = False
 def lista(db, table, id):
     login = comprobar_sesion()[0]
     if login:
-        datos_db, pages = get_list(id)
-        tabla = 'componente'
-        return render_template('listar.html', pagination=pages, mensaje=mensaje_error, datos=datos_db, base=db, table=tabla)
+        datos_db, pages = get_list(db, id)
+        return render_template('listar.html', pagination=pages, mensaje=mensaje_error, datos=datos_db, base=db, table=table)
     else:
         return render_template('ingresar.html')
