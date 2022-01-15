@@ -12,39 +12,19 @@
 {% endwith %}
 <div class="container mt-4">
     <div class="row">
-        <div class="col-md-4">
+        {% for card in cards %}
+            <div class="col-md-4">
             <div class="p-3 border shadow rounded bg-white">
-                <h5 class="text-center">Inventario</h5>
+                <h5 class="text-center">{{card[0]}}</h5>
                 <hr/>
-                <p class="text-center">Almacenamiento de las piezas presentes en los talleres.</p>
-                <p class="text-center">También se encuentran aquí las máquinas y sus lista de componentes.</p>
+                <p class="text-center">{{card[1]}}</p>
+                <p class="text-center">{{card[2]}}</p>
                 <div class="d-flex justify-content-center">
-                    <a href=/index/inventario class="btn btn-danger" style="background-color: #6b705c; border-color: #6b705c">Visitar el inventario</a>
+                    <a href=/index/inventario class="btn btn-danger" style="background-color: #6b705c; border-color: #6b705c">{{card[3]}}</a>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="p-3 border shadow rounded bg-white">
-                <h5 class="text-center">Registro de Incidencias</h5>
-                <hr/>
-                <p class="text-center">Almacenamiento de las piezas presentes en los talleres.</p>
-                <p class="text-center">También se encuentran aquí las máquinas y sus lista de componentes.</p>
-                <div class="d-flex justify-content-center">
-                    <a href=/index/inventario class="btn btn-danger" style="background-color: #6b705c; border-color: #6b705c">Visitar el inventario</a>
-                </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="p-3 border shadow rounded bg-white">
-                <h5 class="text-center">Mantenimeinto preventivo</h5>
-                <hr/>
-                <p class="text-center">Almacenamiento de las piezas presentes en los talleres.</p>
-                <p class="text-center">También se encuentran aquí las máquinas y sus lista de componentes.</p>
-                <div class="d-flex justify-content-center">
-                    <a href=/index/inventario class="btn btn-danger" style="background-color: #6b705c; border-color: #6b705c">Visitar el inventario</a>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
