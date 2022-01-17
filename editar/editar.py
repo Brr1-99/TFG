@@ -13,12 +13,18 @@ def edit_contact(db, table, id):
     global mensaje_error
     login = comprobar_sesion()[0]
     if login:
+        print(db, table, id)
         mensaje_error = False
         datab, cur = db_cursor(db)
         cur.execute('Select * FROM {0} WHERE id = {1}'.format(table, id))
         datos = cur.fetchall()
+
+        cur.execute('Show Columns FROM {0}'.format(table))
+        columns = cur.fetchall()
+
         flash('Por favor especifíque los nuevo valores')
-        return render_template('edit.html', contact=datos[0], indice=id, tabla=table)
+
+        return render_template('edit.html', contact=datos[0], col=columns, indice=id, tabla=table)
     else:
         return render_template('ingresar.html')
 

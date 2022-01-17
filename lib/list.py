@@ -29,7 +29,7 @@ def get_list(db, id):
 
         pagination = Pagination(page=page, per_page=limit, total=t1, record_name='list')
 
-        return datos, pagination
+        return datos, pagination, 'componente'
     else:
         page = request.args.get(get_page_parameter(), type=int, default=1)
         limit = 5
@@ -44,4 +44,4 @@ def get_list(db, id):
 
         datos.append([d1, comp, id])
         pagination = Pagination(page=page, per_page=limit, total=t1, record_name='list')
-        return datos, pagination
+        return datos, pagination, 'componente'
