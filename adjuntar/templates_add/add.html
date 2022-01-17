@@ -17,7 +17,8 @@
         {% for i in range (0, (columns|length)) %}
             {% if columns[i].0 != "id" and columns[i].0 != "imagen" %}
                     <div class="col-6 col-sm-5 col-md-4 col-lg-3 mb-2">
-                        <input type="text" class="form-control" name="col.{{i}}" placeholder="{{columns[i].0}}" required>
+                         <h6> {{columns[i].0|capitalize}}</h6>
+                        <input type="text" class="form-control" name="col.{{i}}" required>
                     </div>
             {% endif %}
         {% endfor %}
