@@ -84,54 +84,66 @@
     </div>
 {% endif %}
 {% for dato in datos %}
-    <div class="container" style="padding : 20px">
+    <div class="container" style="padding : 20px 0px">
         <div class="border rounded bg-light">
             <h6> {{tables[datos.index(dato)]|capitalize}}</h6>
         <!-- {{ pagination[datos.index(dato)].info }} -->
-            <table class="table table-light table-striped table-hover">
-                <thead>
-                    <tr class="table-primary">
-                        {% for valor in dato.1[:-1] %}
-                            <td>{{valor.0|capitalize}}</td>
-                        {% endfor %}
-                            <td>Operaciones</td>
+            <div class="table-responsive">
+                <table class="table table-light table-striped table-hover">
+                    <thead>
+                        <tr class="table-primary">
+                            {% for valor in dato.1[:-1] %}
+                                <td>{{valor.0}}</td>
+                            {% endfor %}
+                            <td>
+                                <i class="bi bi-gear-fill"></i>
+                            </td>
                             {% if tables[datos.index(dato)]== 'maquina' %}
                                 <td> Lista Componentes</td>
                             {% endif %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for i in range (0, dato.0|length)%}
-                            <tr>
-                                {% for j in range(0, (dato.0[i]|length-1))%}
-                                    {% if dato.1[j][0] == 'imagen' %}
-                                        {% if dato.0[i][j] %}
-                                            <td>
-                                                <img class='w-25' src="{{ url_for('bp_upload.display_image', filename=dato.0[i][j]) }}">
-                                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in range (0, dato.0|length)%}
+                                <tr>
+                                    {% for j in range(0, (dato.0[i]|length-1))%}
+                                        {% if dato.1[j][0] == 'imagen' %}
+                                            {% if dato.0[i][j] %}
+                                                <td>
+                                                    <img class='mw-100' src="{{ url_for('bp_upload.display_image', filename=dato.0[i][j]) }}">
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    <a href="/upload/{{base}}/{{dato.2}}/{{dato.0[i][0]}}"> Añadir imagen</a>
+                                                </td>
+                                            {% endif %}
                                         {% else %}
-                                            <td>
-                                                <a href="/upload/{{base}}/{{dato.2}}/{{dato.0[i][0]}}"> Añadir imagen</a>
-                                            </td>
+                                            <td>{{dato.0[i][j]}}</td>
                                         {% endif %}
-                                    {% else %}
-                                        <td>{{dato.0[i][j]}}</td>
-                                    {% endif %}
-                                {% endfor %}
-                                <td>
-                                    <a href="/edit/{{base}}/{{dato.2}}/{{dato.0[i][0]}}"> Edit</a>
-                                    <a href="/delete/{{base}}/{{dato.2}}/{{dato.0[i][0]}}"> Delete</a>
-                                    <a href="/join/{{base}}/{{dato.2}}/{{dato.0[i][0]}}/0"> Join</a>
-                                </td>
-                                {% if tables[datos.index(dato)]== 'maquina'%}
+                                    {% endfor %}
                                     <td>
-                                        <a href="/list/{{base}}/{{dato.2}}/{{dato.0[i][0]}}"> Lista</a>
+                                        <div class="d-flex">
+                                        <a class="btn btn-success" style="background-color: #2FD655; border-color: #2FD655" href="/edit/{{base}}/{{dato.2}}/{{dato.0[i][0]}}">
+                                            <i class="bi bi-pen"></i>
+                                        </a>
+                                        <a class="btn btn-success" style="background-color: #B22929; border-color: #B22929" href="/delete/{{base}}/{{dato.2}}/{{dato.0[i][0]}}">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                        <a class="btn btn-success" style="background-color: #24E3E3; border-color: #24E3E3" href="/join/{{base}}/{{dato.2}}/{{dato.0[i][0]}}/0">
+                                            <i class="bi bi-shuffle"></i>
+                                        </a>
+                                        </div>
                                     </td>
-                                {% endif %}
-                            </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                                    {% if tables[datos.index(dato)]== 'maquina'%}
+                                        <td>
+                                            <a href="/list/{{base}}/{{dato.2}}/{{dato.0[i][0]}}"> Lista</a>
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             {{ pagination[datos.index(dato)].links }}
         </div>
         <div class="d-flex align-items-center"  style="margin-top:15px">
@@ -139,7 +151,6 @@
         </div>
     </div>
 {% endfor %}
-
 {% endblock %}
 {% block barra%}
     <div class="d-flex align-items-center">
@@ -148,4 +159,3 @@
                 </a>
             </div>
 {% endblock %}
-

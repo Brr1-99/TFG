@@ -21,7 +21,7 @@ def upload(db, table, id):
     login = comprobar_sesion()[0]
     if login:
         last_url = request.referrer
-        return render_template('upload.html')
+        return render_template('upload.html', tabla=table, id=id)
     else:
         return render_template('ingresar.html')
 

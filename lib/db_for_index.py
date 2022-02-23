@@ -29,6 +29,7 @@ def db_for_index(db):
 
         cursor1.execute('Show Columns FROM componente')
         c1 = cursor1.fetchall()
+
         datos.append([d1, c1, 'componente'])
 
         cursor1.execute('Select * FROM maquina')

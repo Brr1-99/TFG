@@ -61,8 +61,6 @@ def search_data(db, table):
             current_url = str(request.url)
             criterio = request.form['criterio']
             nombre = request.form['nombre']
-            print(criterio)
-            print(nombre)
             datab, cur = db_cursor(db)
             col = db_for_columns(db, table)
 

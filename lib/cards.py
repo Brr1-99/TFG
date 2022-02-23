@@ -12,6 +12,6 @@ cards = [
     ['Mantenimiento preventivo',
      'Almacenamiento de las revisiones periódicas a realizar en los talleres.',
      'Contiene información importante como la máquina y el parámetro a revisar.',
-     'Visitar el Registro de Manteminiento Preventivo'
+     'Visitar el Registro de Mantenimiento Preventivo'
      ]
 ]
