@@ -1,5 +1,5 @@
 from flask import Blueprint, request, render_template, session, flash, redirect, url_for
-from lib.comprobar_sesión import comprobar_sesion
+from lib.comprobar_sesion import comprobar_sesion
 from config.mydb1 import db1, db2
 import bcrypt
 

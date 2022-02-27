@@ -1,5 +1,5 @@
 from flask import render_template, Blueprint, flash, redirect, url_for, request
-from lib.comprobar_sesión import comprobar_sesion
+from lib.comprobar_sesion import comprobar_sesion
 from lib.table_for_joints import table_joints
 from lib.delete_joins import delete_joins
 

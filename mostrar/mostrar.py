@@ -1,6 +1,6 @@
 from flask import render_template, Blueprint
 from lib.db_for_index import db_for_index
-from lib.comprobar_sesión import comprobar_sesion
+from lib.comprobar_sesion import comprobar_sesion
 from lib.table_for_joints import relaciones
 
 indx = Blueprint('bp_index', __name__, static_folder="static", template_folder="templates_index")

@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template, url_for, redirect, flash
 from flask_paginate import Pagination, get_page_parameter
-from lib.comprobar_sesión import comprobar_sesion
+from lib.comprobar_sesion import comprobar_sesion
 from lib.db_cursor import db_cursor
 from lib.db_for_columns import db_for_columns
 from lib.db_for_index import db_for_index

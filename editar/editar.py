@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, flash, request, redirect, url_for
-from lib.comprobar_sesión import comprobar_sesion
+from lib.comprobar_sesion import comprobar_sesion
 from lib.extractCols import extractCols
 from lib.db_cursor import db_cursor
 

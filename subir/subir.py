@@ -1,7 +1,7 @@
 from flask import redirect, render_template, request, Blueprint, flash, url_for
 import os
 from werkzeug.utils import secure_filename
-from lib.comprobar_sesión import comprobar_sesion
+from lib.comprobar_sesion import comprobar_sesion
 from lib.db_cursor import db_cursor
 
 last_url = ''

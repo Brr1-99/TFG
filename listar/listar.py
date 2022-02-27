@@ -1,6 +1,6 @@
 from flask import render_template, Blueprint
 from lib.list import get_list
-from lib.comprobar_sesión import comprobar_sesion
+from lib.comprobar_sesion import comprobar_sesion
 
 
 listar = Blueprint('bp_listar', __name__, static_folder="static", template_folder="templates_listar")
