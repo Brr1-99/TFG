@@ -1,4 +1,10 @@
+import sys, os
+if sys.executable.endswith('pythonw.exe'):
+    sys.stdout = open(os.devnull, 'w')
+    sys.stderr = open(os.path.join(os.getenv('TEMP'), 'stderr-{}'.format(os.path.basename(sys.argv[0]))), "w")
+    
 from flask import Flask, render_template, session
+from flaskwebgui import FlaskUI
 from inicio.intro import iniciar
 from adjuntar.add import adjuntar
 from buscar.buscar import buscar
@@ -38,6 +44,8 @@ UPLOAD_FOLDER = 'static/uploads/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
+ui = FlaskUI(app, maximized=True, start_server='flask', close_server_on_exit=False)
+
 
 # Rutas Web
 @app.route('/')
@@ -52,4 +60,5 @@ def salir():
 
 
 if __name__ == '__main__':
-    app.run(port=3000, debug=True)
+    # app.run(port=3000, debug=True)
+    ui.run()

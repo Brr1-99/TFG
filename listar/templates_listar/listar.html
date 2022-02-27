@@ -49,10 +49,18 @@
 
                             {% endfor %}
                             <td>
-                                <a href="/edit/{{base}}/{{table}}/{{datos.0.0[i][2]}}"> Edit</a>
-                                <a href="/delete/{{base}}/{{table}}/{{datos.0.0[i][2]}}"> Delete</a>
-                                <a href="/join/{{base}}/{{table}}/{{datos.0.0[i][2]}}/0"> Join</a>
-                                <a href="/join/{{base}}/{{table}}/{{datos.0.0[i][2]}}/1"> Undo Join</a>
+                                <div class="d-flex">
+                                    <a class="btn btn-success" style="background-color: #2FD655; border-color: #2FD655" href="/edit/{{base}}/{{table}}/{{datos.0.0[i][2]}}">
+                                        <i class="bi bi-pen"></i>
+                                    </a>
+                                    <a class="btn btn-success" style="background-color: #2FD655; border-color: #2FD655" href="/delete/{{base}}/{{table}}/{{datos.0.0[i][2]}}">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                    <a class="btn btn-success" style="background-color: #2FD655; border-color: #2FD655" href="/join/{{base}}/{{table}}/{{datos.0.0[i][2]}}">
+                                        <i class="bi bi-shuffle"></i>
+                                    </a>
+                                    <a href="/join/{{base}}/{{table}}/{{datos.0.0[i][2]}}/1"> Undo Join</a>
+                                </div>
                             </td>
                         </tr>
                 {% endfor %}

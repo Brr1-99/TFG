@@ -114,10 +114,23 @@
                         {% endif %}
                     {% endfor %}
                     <td>
-                        <a href="/edit/{{db}}/{{table}}/{{busqueda[i].0}}"> Edit</a>
-                        <a href="/delete/{{db}}/{{table}}/{{busqueda[i].0}}"> Delete</a>
-                        <a href="/join/{{db}}/{{table}}/{{busqueda[i].0}}/0"> Join</a>
+                        <div class="d-flex">
+                            <a class="btn btn-success" style="background-color: #2FD655; border-color: #2FD655" href="/edit/{{db}}/{{table}}/{{busqueda[i].0}}">
+                                <i class="bi bi-pen"></i>
+                            </a>
+                            <a class="btn btn-success" style="background-color: #B22929; border-color: #B22929" href="/delete/{{db}}/{{table}}/{{busqueda[i].0}}">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                            <a class="btn btn-success" style="background-color: #24E3E3; border-color: #24E3E3" href="/join/{{db}}/{{table}}/{{busqueda[i].0}}">
+                                <i class="bi bi-shuffle"></i>
+                            </a>
+                        </div>
                     </td>
+                    {% if table == 'maquina'%}
+                        <td>
+                            <a href="/list/{{db}}/{{table}}/{{busqueda[i].0}}"> Lista</a>
+                        </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </tbody>
