@@ -1,4 +1,5 @@
 import pyvan
+#!/usr/bin/env python3
 
 
 OPTIONS = {
