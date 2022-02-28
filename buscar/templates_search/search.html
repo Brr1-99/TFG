@@ -86,55 +86,58 @@
     </div>
 </div>
 <div class="border rounded bg-light">
-    <table class="table table-light table-striped table-hover">
-        <thead>
-        <tr class="table-primary">
-            {% for column in columns[:-1] %}
-                    <td>{{column.0}}</td>
-            {% endfor %}
-            <td>Operaciones</td>
-        </tr>
-        </thead>
-        <tbody>
-            {% for i in range (0, busqueda|length)%}
-                <tr>
-                    {% for j in range (0, (busqueda[i]|length-1))%}
-                        {% if columns[j][0] == 'imagen'%}
-                                {% if busqueda[i][j] %}
-                                    <td>
-                                        <img class='w-25' src="{{ url_for('bp_upload.display_image', filename=busqueda[i][j]) }}">
-                                    </td>
-                                {% else %}
-                                    <td>
-                                        <a href="/upload/{{db}}/{{table}}/{{busqueda[i].0}}"> Añadir imagen</a>
-                                    </td>
-                                {% endif %}
-                        {% else %}
-                            <td>{{busqueda[i][j]}}</td>
-                        {% endif %}
-                    {% endfor %}
-                    <td>
-                        <div class="d-flex">
-                            <a class="btn btn-success" style="background-color: #2FD655; border-color: #2FD655" href="/edit/{{db}}/{{table}}/{{busqueda[i].0}}">
-                                <i class="bi bi-pen"></i>
-                            </a>
-                            <a class="btn btn-success" style="background-color: #B22929; border-color: #B22929" href="/delete/{{db}}/{{table}}/{{busqueda[i].0}}">
-                                <i class="bi bi-trash"></i>
-                            </a>
-                            <a class="btn btn-success" style="background-color: #24E3E3; border-color: #24E3E3" href="/join/{{db}}/{{table}}/{{busqueda[i].0}}">
-                                <i class="bi bi-shuffle"></i>
-                            </a>
-                        </div>
-                    </td>
-                    {% if table == 'maquina'%}
+    <div class="table-responsive">
+        <table class="table table-light table-striped table-hover">
+            <thead>
+            <tr class="table-primary">
+                {% for column in columns[:-1] %}
+                        <td>{{column.0}}</td>
+                {% endfor %}
+                <td>Operaciones</td>
+            </tr>
+            </thead>
+            <tbody>
+                {% for i in range (0, busqueda|length)%}
+                    <tr>
+                        {% for j in range (0, (busqueda[i]|length-1))%}
+                            {% if columns[j][0] == 'imagen'%}
+                                    {% if busqueda[i][j] %}
+                                        <td>
+                                            <img class='mw-100' src="{{ url_for('bp_upload.display_image', filename=busqueda[i][j]) }}">
+                                        </td>
+                                    {% else %}
+                                        <td>
+                                            <a href="/upload/{{db}}/{{table}}/{{busqueda[i].0}}"> Añadir imagen</a>
+                                        </td>
+                                    {% endif %}
+                            {% else %}
+                                <td>{{busqueda[i][j]}}</td>
+                            {% endif %}
+                        {% endfor %}
                         <td>
-                            <a href="/list/{{db}}/{{table}}/{{busqueda[i].0}}"> Lista</a>
+                            <div class="d-flex">
+                                <a class="btn btn-success" style="background-color: #2FD655; border-color: #2FD655" href="/edit/{{db}}/{{table}}/{{busqueda[i].0}}">
+                                    <i class="bi bi-pen"></i>
+                                </a>
+                                <a class="btn btn-success" style="background-color: #B22929; border-color: #B22929" href="/delete/{{db}}/{{table}}/{{busqueda[i].0}}">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                                <a class="btn btn-success" style="background-color: #24E3E3; border-color: #24E3E3" href="/join/{{db}}/{{table}}/{{busqueda[i].0}}">
+                                    <i class="bi bi-shuffle"></i>
+                                </a>
+                            </div>
                         </td>
-                    {% endif %}
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                        {% if table == 'maquina'%}
+                            <td>
+                                <a href="/list/{{db}}/{{table}}/{{busqueda[i].0}}"> Lista</a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {{ pagination.links }}
 </div>
  <div class="row">
         <div class="d-flex align-items-center"  style="margin-top:20px">

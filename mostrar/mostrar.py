@@ -3,7 +3,7 @@ from lib.db_for_index import db_for_index
 from lib.comprobar_sesion import comprobar_sesion
 from lib.table_for_joints import relaciones
 
-indx = Blueprint('bp_index', __name__, static_folder="static", template_folder="templates_index")
+indx = Blueprint('bp_index', __name__, static_folder="static", template_folder="templates")
 mensaje_error = False
 
 

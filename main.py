@@ -1,8 +1,3 @@
-import sys, os
-if sys.executable.endswith('pythonw.exe'):
-    sys.stdout = open(os.devnull, 'w')
-    sys.stderr = open(os.path.join(os.getenv('TEMP'), 'stderr-{}'.format(os.path.basename(sys.argv[0]))), "w")
-    
 from flask import Flask, render_template, session
 from flaskwebgui import FlaskUI
 from inicio.intro import iniciar
@@ -26,6 +21,7 @@ mydb2, cursor2 = db2()
 mydb3, cursor3 = db3()
 
 # Creación API y conexión Blueprints
+
 app = Flask(__name__)
 app.register_blueprint(iniciar, url_prefix="/inicio")
 app.register_blueprint(adjuntar, url_prefix="/add")
@@ -44,7 +40,7 @@ UPLOAD_FOLDER = 'static/uploads/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
-ui = FlaskUI(app, maximized=True, start_server='flask', close_server_on_exit=False)
+# ui = FlaskUI(app, maximized=True, start_server='flask', close_server_on_exit=False)
 
 
 # Rutas Web
@@ -60,5 +56,5 @@ def salir():
 
 
 if __name__ == '__main__':
-    # app.run(port=3000, debug=True)
-    ui.run()
+    app.run(port=3000, debug=True)
+    # ui.run()
