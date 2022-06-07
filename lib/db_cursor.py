@@ -1,9 +1,10 @@
 from config.mydb1 import db1, db2, db3
 
-
 def db_cursor(db):
-    cursor = 0
-    mydb = 0
+    """
+    Devuelve la conexión a la base de datos y su correspondiente cursor
+    Así se pueden realizar las operaciones 
+    """
     if db == 'inventario':
         mydb, cursor = db1()
     elif db == 'manten_correctivo':

@@ -1,0 +1,36 @@
+{%extends 'layout.html'%}
+{% block body%}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <p> {{message}}</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor%}
+{% endif %}
+{% endwith %}
+<h2 class="text-center mb-4">Editando componente <span class="fw-bolder">'{{indice}}'</span> de tabla <span class="fw-bolder">'{{tabla}}'</span></h2>
+<hr/>
+<form action="/edit" method="POST">
+    <div class="row">
+        {% for i in range (1, (contact|length)-1) %}
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-2">
+                <h6> {{col[i][0]|capitalize}}</h6>
+                <input type="text" class="form-control" name="contact.{{i}}" value="{{contact[i]}}" required>
+            </div>
+        {% endfor %}
+    </div>
+    <hr/>
+    <button type="submit" class="btn btn-primary">
+    Enviar
+    </button>
+</form>
+{% endblock %}
+{% block barra%}
+    <div class="d-flex align-items-center">
+                <a class="btn btn-success" style="background-color: #ef4444; border-color: #ef4444" href="/salir" role="button">
+                    Cerrar sesión <i class="bi bi-arrow-bar-down"></i>
+                </a>
+            </div>
+{% endblock %}

@@ -1,10 +1,25 @@
 import MySQLdb
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
+
+"""
+Se guarda la información relacionada al servidor
+en un archivo oculto
+"""
+host = os.getenv("host") or ""
+user = os.getenv("user") or ""
+password = os.getenv("password") or ""
 
 def db1():
-    mydb1 = MySQLdb.connect(host='localhost',
-                            user='root',
-                            password='',
+    """
+    Se crea la conexion a la base de datos y su cursor 
+    para poder realizar acciones sobre ella
+    """
+    mydb1 = MySQLdb.connect(host= host,
+                            user= user,
+                            password= password,
                             db='inventario')
 
     cursor1 = mydb1.cursor()

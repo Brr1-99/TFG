@@ -5,6 +5,9 @@ from config.mydb1 import db1
 
 
 def get_list(db, id):
+    """
+    Obtiene los datos de las tablas entrelazadas para crearse luego una tabla en el html 
+    """
     datos = []
 
     cursor_comp = db1()[1]

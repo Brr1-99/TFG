@@ -6,13 +6,17 @@ from lib.db_for_columns import db_for_columns
 from lib.db_for_index import db_for_index
 from lib.table_for_joints import relaciones
 
-buscar = Blueprint('bp_busqueda', __name__, static_folder="static", template_folder="templates_search")
+buscar = Blueprint('bp_busqueda', __name__, static_folder="static", template_folder="templates")
 
 mensaje_error = False
 
 
 @buscar.route('', methods=['GET', 'POST'])
 def search():
+    """
+    Se obtiene la última url para recoger los datos más recientes de la tabla
+    Así se tiene ya una primera vista de la magnitud de los datos
+    """
     global mensaje_error
     login = comprobar_sesion()[0]
     if login:
@@ -22,7 +26,7 @@ def search():
             table_index = str(request.form['buscar'])[-1]
             last_url = str(request.referrer)
             db = last_url.split('/')[-1]
-            datos_db, base, pages, tables_db = db_for_index(db)
+            tables_db = db_for_index(db)[-1]
 
             table = tables_db[int(table_index)]
 
@@ -36,6 +40,13 @@ def search():
 
 @buscar.route('/<string:db>/<string:table>', methods=["GET", "POST"])
 def search_data(db, table):
+    """
+    Se utiliza la url para pillar las columnas de la tabla a buscar
+    Se muestran los campos de búsqueda posibles a partir de las columnas
+    Si el método no es 'GET' se buscan los posibles valores dados los criterios del formulario
+    Si hay datos se muestran en una tabla construida dinámicamente
+    De lo contrario se muestra un mensaje de error 
+    """
     global mensaje_error
     login = comprobar_sesion()
     if login:

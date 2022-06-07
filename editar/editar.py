@@ -3,17 +3,20 @@ from lib.comprobar_sesion import comprobar_sesion
 from lib.extractCols import extractCols
 from lib.db_cursor import db_cursor
 
-edit = Blueprint('bp_editar', __name__, static_folder="static", template_folder="templates_edit")
+edit = Blueprint('bp_editar', __name__, static_folder="static", template_folder="templates")
 
 mensaje_error = False
 
 
 @edit.route('/<string:db>/<string:table>/<string:id>')
 def edit_contact(db, table, id):
+    """
+    Se buscan los valores a través de los parámetros de la url @db, @table y @id
+    Se envían para ser mostrados y que el usuario los cambie
+    """
     global mensaje_error
     login = comprobar_sesion()[0]
     if login:
-        print(db, table, id)
         mensaje_error = False
         datab, cur = db_cursor(db)
         cur.execute('Select * FROM {0} WHERE id = {1}'.format(table, id))
@@ -31,6 +34,10 @@ def edit_contact(db, table, id):
 
 @edit.route('', methods=['GET', 'POST'])
 def update_contact():
+    """
+    Se recogen los nuevos datos del formulario de la plantilla en la vista 'edit.html'
+    Se actualizan en la base de datos correspondiente
+    """
     global mensaje_error
     login = comprobar_sesion()[0]
     if login:
@@ -38,7 +45,7 @@ def update_contact():
             mensaje_error = False
 
             last_url = str(request.referrer)
-            indice = last_url.split('/')[-1]
+            index = last_url.split('/')[-1]
             table = last_url.split('/')[-2]
             db = last_url.split('/')[-3]
 
@@ -49,18 +56,21 @@ def update_contact():
             for column in columns[1:-1]:
                 col_name.append(column[0])
 
-            datas = []
+            data = []
             for i in range(len(col_name)):
-                datas.append(request.form['contact.{0}'.format(i + 1)])
+                data.append(request.form['contact.{0}'.format(i + 1)])
 
-            text = extractCols(col_name)
-            cur.execute("""
-                UPDATE `{0}`
-                SET {1}
-                WHERE id = {2} """.format(table, text, indice), datas)
+            cols = extractCols(col_name)
+            try:
+                cur.execute("""
+                    UPDATE `{0}`
+                    SET {1}
+                    WHERE id = {2} """.format(table, cols, index), data)
 
-            datab.commit()
-            flash('Pieza actualizada correctamente.')
+                datab.commit()
+                flash('Pieza actualizada correctamente.')
+            except BaseException as error:
+                flash(f'Se ha producido un error al actualizar los valores: {error}.')
             return redirect(url_for('bp_index.index', db=db))
         else:
             flash('Selecciona un ítem a editar para acceder a la página que buscas.')

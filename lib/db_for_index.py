@@ -4,6 +4,11 @@ from config.mydb1 import db1, db2, db3
 
 
 def db_for_index(db):
+    """
+    Se obtienen los datos de varias tablas de la base de datos @db
+    Estos se mostrarán en la vista de 'mostrar' para cada una de las bases de datos
+    Los datos se muestran en tablas dinámicas y tambien se crean los links a las otras vistas
+    """
     datos = []
     pages = []
     tables = []

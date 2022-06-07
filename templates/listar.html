@@ -1,0 +1,85 @@
+{% extends 'layout.html' %}
+{% block body%}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <p> {{message}}</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor%}
+{% endif %}
+{% endwith %}
+{% if mensaje %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p> No hay coincidencias. Pruebe con otro criterio de búsqueda. </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+<h2 class="text-center mb-4"> Listaje componentes de <span class="fw-bolder">'{{table}}'</span> id <span class="fw-bolder">'{{datos.0.2}}'</span></h2>
+<hr/>
+<div class="container" style="padding : 20px">
+    <div class="border rounded bg-light">
+        <div class="table-responsive">
+            <table class="table table-light table-striped table-hover">
+                <thead>
+                    <tr class="table-primary">
+                        {% for valor in datos.0.1[:-1] %}
+                            <td>{{valor.0|capitalize}}</td>
+                        {% endfor %}
+                            <td>Operaciones</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in range (0, datos.0.0|length)%}
+                            <tr>
+                                {% for j in range(2,(datos.0.0[i]|length-1)) %}
+                                    {% if datos.0.1[j-2].0 == 'imagen' %}
+                                            {% if datos.0.0[i][j] %}
+                                                    <td>
+                                                        <img class='mw-100' src="{{ url_for('bp_upload.display_image', filename=datos.0.0[i][j]) }}">
+                                                    </td>
+                                                {% else %}
+                                                    <td>
+                                                        <a href="/upload/{{base}}/{{datos.0.2}}/{{datos.0.0[i][0]}}"> Añadir imagen</a>
+                                                    </td>
+                                            {% endif %}
+                                    {% else %}
+                                            <td>{{datos.0.0[i][j]}}</td>
+                                    {% endif %}
+
+                                {% endfor %}
+                                <td>
+                                    <div class="d-flex">
+                                        <a class="btn btn-success" style="background-color: #2FD655; border-color: #2FD655" href="/edit/{{base}}/{{table}}/{{datos.0.0[i][2]}}">
+                                            <i class="bi bi-pen"></i>
+                                        </a>
+                                        <a class="btn btn-success" style="background-color: #B22929; border-color: #B22929" href="/delete/{{base}}/{{table}}/{{datos.0.0[i][2]}}">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                        <a class="btn btn-success" style="background-color: #24E3E3; border-color: #24E3E3" href="/join/{{base}}/{{table}}/{{datos.0.0[i][2]}}">
+                                            <i class="bi bi-shuffle"></i>
+                                        </a>
+                                        <a href="/join/{{base}}/{{table}}/{{datos.0.0[i][2]}}/1"> Undo Join</a>
+                                    </div>
+                                </td>
+                            </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {{ pagination.links }}
+    </div>
+    <div class="d-flex align-items-center"  style="margin-top:20px">
+        <a class="btn btn-info" href="/add/{{base}}/{{table}}" role="button">Añadir nuevo Componente</a>
+    </div>
+</div>
+{% endblock %}
+{% block barra%}
+    <div class="d-flex align-items-center">
+                <a class="btn btn-success" style="background-color: #ef4444; border-color: #ef4444" href="/salir" role="button">
+                    Cerrar sesión <i class="bi bi-arrow-bar-down"></i>
+                </a>
+            </div>
+{% endblock %}
+

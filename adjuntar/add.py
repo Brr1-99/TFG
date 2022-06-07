@@ -4,13 +4,17 @@ from lib.to_mysql import to_mysql
 from lib.db_for_columns import db_for_columns
 from lib.db_cursor import db_cursor
 
-adjuntar = Blueprint('bp_añadir', __name__, static_folder="static", template_folder="templates_add")
+adjuntar = Blueprint('bp_añadir', __name__, static_folder="static", template_folder="templates")
 
 mensaje_error = False
 
 
 @adjuntar.route('/<string:db>/<string:table>')
 def add(db, table):
+    """
+    Se recogen los nombres de las columnas de la tabla
+    en la que se quiere añadir una nueva instancia
+    """
     global mensaje_error
     login = comprobar_sesion()[0]
     if login:
@@ -28,6 +32,10 @@ def add(db, table):
 
 @adjuntar.route('', methods=['GET', 'POST'])
 def add_table():
+    """
+    Se detecta la url anterior para escoger la tabla en la que insertar los nuevos datos
+    Los datos a añadir vienen del formulario de la vista 'add.html' 
+    """
     global mensaje_error
     login, id_user = comprobar_sesion()
     if login:

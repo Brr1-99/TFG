@@ -39,8 +39,7 @@ app.secret_key = "sE+gcUVWsU491sJ"
 UPLOAD_FOLDER = 'static/uploads/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-
-# ui = FlaskUI(app, maximized=True, start_server='flask', close_server_on_exit=False)
+ui = FlaskUI(app, maximized=True, start_server='flask', close_server_on_exit=False)
 
 
 # Rutas Web
@@ -56,5 +55,5 @@ def salir():
 
 
 if __name__ == '__main__':
-    app.run(port=3000, debug=True)
-    # ui.run()
+    # app.run(port=3000, debug=True)
+    ui.run()

@@ -16,9 +16,6 @@ step = 1
 
 def relaciones1(vector):
     message = 'Dirígete a una de las siguientes tablas para crear relación:'
-    for i in relaciones.keys():
-        if i == vector:
-            init = vector
     return message, relaciones[vector]
 
 
@@ -35,6 +32,11 @@ def relaciones2(vector):
 
 
 def table_joints(db, table, id):
+    """
+    Se realiza la unión de dos tablas en 2 pasos
+    En el primero se muestran las tablas a poder relacionar con la primera escogida
+    En el segundo si se ha elegido una segunda tabla de forma correcta, se realiza la unón en la base de datos
+    """
     global join1
     global step
     global join2

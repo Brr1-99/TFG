@@ -8,6 +8,10 @@ delete = Blueprint('bp_eliminar', __name__, static_folder="static", template_fol
 
 @delete.route('/<string:db>/<string:table>/<string:id>')
 def delete_contact(db, table, id):
+    """
+    Esta fucnión elimina una instancia de las bases de datos
+    En caso de conetner una imagen, la elimina de la carpeta de imágenes    
+    """
     login = comprobar_sesion()[0]
     if login:
         datab, cur = db_cursor(db)
@@ -16,8 +20,8 @@ def delete_contact(db, table, id):
             image = cur.fetchone()
             filename = image[0]
             os.remove('static/uploads/' + filename)
-        except Exception as E:
-            pass
+        except BaseException as error:
+            flash(f'Se ha producido un error al intentar eliminar el item id={id}.\n El error detectado es: {error}')
         cur.execute('DELETE FROM `{0}` WHERE id = {1}'.format(table, id))
         datab.commit()
         flash('Item de la tabla "{0}" eliminado correctamente'.format(table))

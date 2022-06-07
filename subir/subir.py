@@ -6,7 +6,7 @@ from lib.db_cursor import db_cursor
 
 last_url = ''
 
-uploads = Blueprint('bp_upload', __name__, static_folder="static", template_folder="templates_upload")
+uploads = Blueprint('bp_upload', __name__, static_folder="static", template_folder="templates")
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
@@ -17,6 +17,9 @@ def allowed_file(filename):
 
 @uploads.route('/<string:db>/<string:table>/<string:id>', methods=['GET'])
 def upload(db, table, id):
+    """
+    Se renderiza la vista de subida de imagen dinámica
+    """
     global last_url
     login = comprobar_sesion()[0]
     if login:
@@ -28,6 +31,10 @@ def upload(db, table, id):
 
 @uploads.route('', methods=['POST'])
 def upload_commit():
+    """
+    Si hay una imagen para subir se mira que corresponda con un formato válido
+    De ser así, se actualiza el valor del campo de imagen del item en su base de datos
+    """
     if 'file' not in request.files:
         flash('No file part')
         return redirect(request.url)
@@ -55,4 +62,7 @@ def upload_commit():
 
 @uploads.route('/display/<filename>')
 def display_image(filename):
+    """
+    Recorre la carpeta de imágenes para mostrar la imagen de nombre @filename
+    """
     return redirect(url_for('static', filename='uploads/' + filename), code=301)

@@ -6,6 +6,9 @@ cursor3 = db3()[1]
 
 
 def db_for_columns(db, table):
+    """
+    Devuelve los valores de las columnas de una determinada tabla
+    """
     col = []
     if db == 'inventario':
         cursor1.execute('Show Columns FROM {0}'.format(table))

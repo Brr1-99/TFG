@@ -5,6 +5,9 @@ result = 0
 
 
 def mysql(option, data1, data2, columna):
+    """
+    Se crean los nuevos valores en la tabla de unión
+    """
     if option == 0:
         name = [data1[0][1], data2[0][1]]
         name.sort()
@@ -22,7 +25,6 @@ def mysql(option, data1, data2, columna):
             datas = [data1[0][2], data2[0][2]]
         else:
             datas = [data2[0][2], data1[0][2]]
-        print('INSERT INTO `{0}` {1} VALUES {2}'.format(table, names, tuple(datas)))
         cursor.execute('INSERT INTO `{0}` {1} VALUES {2}'.format(table, names, tuple(datas)))
         mydb.commit()
 
@@ -48,6 +50,9 @@ def mysql(option, data1, data2, columna):
 
 
 def insert_tables(join1, join2):
+    """
+    Se comprueba el orden en el que se mandaron las dos columnas a unir para evitar errores
+    """
     global result
     col = []
     col1 = db_for_columns(join1[0][0], join1[0][1])

@@ -9,6 +9,9 @@ mensaje_error = False
 
 @indx.route('/<string:db>')
 def index(db):
+    """
+    Se buscan  los últimos datos modificados de la base de datos y se pasan a la vista 'index.html'
+    """
     login = comprobar_sesion()[0]
     if login:
         datos_db, base, pages, tables_db = db_for_index(db)

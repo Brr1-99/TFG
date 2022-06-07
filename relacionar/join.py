@@ -8,6 +8,10 @@ joint = Blueprint('bp_join', __name__, static_folder="static", template_folder="
 
 @joint.route('/<string:db>/<string:table>/<string:id>/<int:option>')
 def join(db, table, id, option):
+    """
+    Dependiendo de la opción escogida se pueden unir valores de tablas diferentes 
+    o eliminar uniones ya creadas
+    """
     login = comprobar_sesion()[0]
     if login:
         if option == 0:
