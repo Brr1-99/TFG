@@ -1,5 +1,4 @@
 from flask import Flask, render_template, session
-from flaskwebgui import FlaskUI
 from inicio.intro import iniciar
 from adjuntar.add import adjuntar
 from buscar.buscar import buscar
@@ -13,15 +12,11 @@ from listar.listar import listar
 from subir.subir import uploads
 
 # Conexión a todas las bases de datos
-
 mydb1, cursor1 = db1()
-
 mydb2, cursor2 = db2()
-
 mydb3, cursor3 = db3()
 
 # Creación API y conexión Blueprints
-
 app = Flask(__name__)
 app.register_blueprint(iniciar, url_prefix="/inicio")
 app.register_blueprint(adjuntar, url_prefix="/add")
@@ -39,7 +34,6 @@ app.secret_key = "sE+gcUVWsU491sJ"
 UPLOAD_FOLDER = 'static/uploads/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-ui = FlaskUI(app, maximized=True, start_server='flask', close_server_on_exit=False)
 
 
 # Rutas Web
@@ -55,5 +49,4 @@ def salir():
 
 
 if __name__ == '__main__':
-    # app.run(port=3000, debug=True)
-    ui.run()
+    app.run(port=3000, debug=True)
