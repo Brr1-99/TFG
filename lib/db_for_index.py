@@ -3,7 +3,7 @@ from flask_paginate import Pagination, get_page_parameter
 from config.mydb1 import db1, db2, db3
 
 
-def db_for_index(db):
+def db_for_index(db: str) -> tuple[list[str], str, list[str], list[str]]:
     """
     Se obtienen los datos de varias tablas de la base de datos @db
     Estos se mostrarán en la vista de 'mostrar' para cada una de las bases de datos

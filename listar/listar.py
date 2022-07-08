@@ -8,7 +8,7 @@ mensaje_error = False
 
 
 @listar.route('/<string:db>/<string:table>/<string:id>')
-def lista(db, table, id):
+def lista(db: str, table: str, id: int) -> any:
     """
     Se listan los valores relacionados entre varias tablas de una base de datos
     @db, @table y @id

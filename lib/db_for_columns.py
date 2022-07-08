@@ -5,7 +5,7 @@ cursor2 = db2()[1]
 cursor3 = db3()[1]
 
 
-def db_for_columns(db, table):
+def db_for_columns(db: str, table: str) -> list[str]:
     """
     Devuelve los valores de las columnas de una determinada tabla
     """

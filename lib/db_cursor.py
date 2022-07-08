@@ -1,6 +1,6 @@
 from config.mydb1 import db1, db2, db3
 
-def db_cursor(db):
+def db_cursor(db: str):
     """
     Devuelve la conexión a la base de datos y su correspondiente cursor
     Así se pueden realizar las operaciones 

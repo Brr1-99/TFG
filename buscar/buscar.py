@@ -39,7 +39,7 @@ def search():
 
 
 @buscar.route('/<string:db>/<string:table>', methods=["GET", "POST"])
-def search_data(db, table):
+def search_data(db: str, table: str) -> any:
     """
     Se utiliza la url para pillar las columnas de la tabla a buscar
     Se muestran los campos de búsqueda posibles a partir de las columnas

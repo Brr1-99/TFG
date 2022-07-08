@@ -8,7 +8,7 @@ mensaje_error = False
 
 
 @indx.route('/<string:db>')
-def index(db):
+def index(db: str) -> any:
     """
     Se buscan  los últimos datos modificados de la base de datos y se pasan a la vista 'index.html'
     """

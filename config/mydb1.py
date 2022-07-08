@@ -13,7 +13,7 @@ user = os.getenv("user") or ""
 password = os.getenv("password") or ""
 
 
-def db1():
+def db1() -> tuple[MySQLdb.connect, MySQLdb.connections.cursor]:
     """
     Se crea la conexion a la base de datos y su cursor 
     para poder realizar acciones sobre ella
@@ -27,7 +27,7 @@ def db1():
     return mydb1, cursor1
 
 
-def db2():
+def db2() -> tuple[MySQLdb.connect, MySQLdb.connections.cursor]:
     mydb2 = MySQLdb.connect(host='localhost',
                             user='root',
                             password='',
@@ -37,7 +37,7 @@ def db2():
     return mydb2, cursor2
 
 
-def db3():
+def db3() -> tuple[MySQLdb.connect, MySQLdb.connections.cursor]:
     mydb3 = MySQLdb.connect(host='localhost',
                             user='root',
                             password='',

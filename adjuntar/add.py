@@ -10,7 +10,7 @@ mensaje_error = False
 
 
 @adjuntar.route('/<string:db>/<string:table>')
-def add(db, table):
+def add(db: str, table: str) -> any:
     """
     Se recogen los nombres de las columnas de la tabla
     en la que se quiere añadir una nueva instancia

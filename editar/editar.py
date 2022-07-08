@@ -9,7 +9,7 @@ mensaje_error = False
 
 
 @edit.route('/<string:db>/<string:table>/<string:id>')
-def edit_contact(db, table, id):
+def edit_contact(db: str, table: str, id: int) -> any:
     """
     Se buscan los valores a través de los parámetros de la url @db, @table y @id
     Se envían para ser mostrados y que el usuario los cambie

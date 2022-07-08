@@ -11,12 +11,12 @@ uploads = Blueprint('bp_upload', __name__, static_folder="static", template_fold
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 
-def allowed_file(filename):
+def allowed_file(filename: str) -> str:
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @uploads.route('/<string:db>/<string:table>/<string:id>', methods=['GET'])
-def upload(db, table, id):
+def upload(db: str, table: str, id: int) -> any:
     """
     Se renderiza la vista de subida de imagen dinámica
     """
@@ -61,7 +61,7 @@ def upload_commit():
 
 
 @uploads.route('/display/<filename>')
-def display_image(filename):
+def display_image(filename: str):
     """
     Recorre la carpeta de imágenes para mostrar la imagen de nombre @filename
     """

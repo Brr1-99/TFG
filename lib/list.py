@@ -4,7 +4,7 @@ from lib.db_cursor import db_cursor
 from config.mydb1 import db1
 
 
-def get_list(db, id):
+def get_list(db: str, id: int) -> tuple[list, Pagination, str]:
     """
     Obtiene los datos de las tablas entrelazadas para crearse luego una tabla en el html 
     """

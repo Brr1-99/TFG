@@ -1,7 +1,7 @@
 from config.mydb1 import db1
 
 
-def delete_joins(id_maquina, id_comp):
+def delete_joins(id_maquina: int, id_comp: int) -> str:
     """
     Se elimina la unión entre las tablas a través de los ids
     """

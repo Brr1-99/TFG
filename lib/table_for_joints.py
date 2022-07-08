@@ -14,12 +14,12 @@ data2 = []
 step = 1
 
 
-def relaciones1(vector):
+def relaciones1(vector: list[str]) -> tuple[str, str]:
     message = 'Dirígete a una de las siguientes tablas para crear relación:'
     return message, relaciones[vector]
 
 
-def relaciones2(vector):
+def relaciones2(vector: list[str]) -> tuple[str, list[str]]:
     global step
     vec = None
     message = 'No has elegido una tabla correcta.Prueba una de estas:'
@@ -31,7 +31,7 @@ def relaciones2(vector):
     return message, vec
 
 
-def table_joints(db, table, id):
+def table_joints(db: str, table: str, id: int) -> tuple[str, list[list[str]]]:
     """
     Se realiza la unión de dos tablas en 2 pasos
     En el primero se muestran las tablas a poder relacionar con la primera escogida

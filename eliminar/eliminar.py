@@ -7,7 +7,7 @@ delete = Blueprint('bp_eliminar', __name__, static_folder="static", template_fol
 
 
 @delete.route('/<string:db>/<string:table>/<string:id>')
-def delete_contact(db, table, id):
+def delete_contact(db: str, table: str, id: int) -> any:
     """
     Esta fucnión elimina una instancia de las bases de datos
     En caso de conetner una imagen, la elimina de la carpeta de imágenes    

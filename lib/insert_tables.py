@@ -4,7 +4,7 @@ from lib.to_mysql import to_mysql
 result = 0
 
 
-def mysql(option, data1, data2, columna):
+def mysql(option: int, data1: list[str], data2: list[str], columna: str):
     """
     Se crean los nuevos valores en la tabla de unión
     """
@@ -49,7 +49,7 @@ def mysql(option, data1, data2, columna):
         mydb.commit()
 
 
-def insert_tables(join1, join2):
+def insert_tables(join1: list[list[str]], join2: list[list[str]]):
     """
     Se comprueba el orden en el que se mandaron las dos columnas a unir para evitar errores
     """
